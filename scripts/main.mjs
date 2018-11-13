@@ -24,12 +24,9 @@ async function onSubmitClass() {
     timetable = await timetableP;
     optionalSubjects = await optionalSubjectsP;
 
-    console.log(optionalSubjects);
     const subjects = listSubjects(timetable);
-    console.log(subjects);
     optionalSubjects = optionalSubjects.filter(subject => subjects.includes(subject));
 
-    console.log(optionalSubjects);
     await createMainForm();
 }
 
@@ -145,7 +142,7 @@ async function onSubmitMainForm() {
             for (let dayOfWeek = 0; dayOfWeek < 5; dayOfWeek++) {
                 const lessons = timetable[dayOfWeek][period];
                 let lesson;
-                if (lessons.length === 1 && !optionalSubjects.includes(lessons[0])) {
+                if (lessons.length === 1 && !optionalSubjects.includes(lessons[0].subject)) {
                     lesson = lessons[0];
                 } else {
                     const filteredLessons = lessons.filter(lesson => selected.includes(lesson.subjectWithClassIdentifier));
