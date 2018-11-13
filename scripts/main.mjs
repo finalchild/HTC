@@ -1,4 +1,4 @@
-import {listClassIdentifiers, listSubjects, retrieveOptionalSubjects, retrieveTimetable, BLANK_LESSON} from './timetable_handler.mjs';
+import {listClassIdentifiers, listSubjects, retrieveOptionalSubjects, retrieveSubjectNameMapping, retrieveTimetable, BLANK_LESSON} from './timetable_handler.mjs';
 
 const selectGrade = document.getElementById('select-grade');
 const selectLectureClass = document.getElementById('select-lecture-class');
