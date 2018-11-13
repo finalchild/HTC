@@ -136,7 +136,6 @@ async function onSubmitMainForm() {
         thead.append(tr);
     }
     {
-        const rows;
         for (let period = 0; period < 6; period++) {
             const row = table.insertRow();
             const th = document.createElement('th');
@@ -176,10 +175,6 @@ async function onSubmitMainForm() {
                 }
                 `<td {{#if empty}}style="background-color: #9197b5;"{{/if}}>{{subject}}{{#if teacher}}<br><span class="teacher">{{teacher}}</span>{{/if}}{{#if room}}<br><span class="room">{{room}}</span>{{/if}}</td>`
             }
-            rows.push(row);
         }
     }
-
-
-    console.log(selected);
 }
