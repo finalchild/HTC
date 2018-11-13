@@ -24,9 +24,12 @@ async function onSubmitClass() {
     timetable = await timetableP;
     optionalSubjects = await optionalSubjectsP;
 
+    console.log(optionalSubjects);
     const subjects = listSubjects(timetable);
+    console.log(subjects);
     optionalSubjects = optionalSubjects.filter(subject => subjects.includes(subject));
 
+    console.log(optionalSubjects);
     await createMainForm();
 }
 
