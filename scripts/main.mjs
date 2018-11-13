@@ -11,8 +11,6 @@ let lectureClass;
 let timetable;
 let optionalSubjects;
 
-let optionalSubjectsToChoose;
-
 async function onSubmitClass() {
     selectGrade.disabled = true;
     selectLectureClass.disabled = true;
@@ -27,7 +25,7 @@ async function onSubmitClass() {
     optionalSubjects = await optionalSubjectsP;
 
     const subjects = listSubjects(timetable);
-    optionalSubjects = optionalSubjects.filter(subject => subjects.has(subject));
+    optionalSubjects = optionalSubjects.filter(subject => subjects.includes(subject));
 
     await createMainForm();
 }

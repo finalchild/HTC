@@ -66,7 +66,7 @@ export async function retrieveOptionalSubjects(grade) {
 export function listSubjects(timetable) {
     const set = new Set();
     timetable.forEach(dayOfWeekTable => dayOfWeekTable.forEach(periodTable => periodTable.forEach(lesson => set.add(lesson.subject))));
-    return set;
+    return Array.from(set);
 }
 
 export function listClassIdentifiers(timetable, subject) {
