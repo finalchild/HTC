@@ -74,15 +74,78 @@ async function createMainForm() {
             selectDiv.append(select);
             checkboxDiv.append(selectDiv);
 
+            const classTimeInfo = document.createElement('span');
+            classTimeInfo.classList.add('class-time-info');
+            classTimeInfo.id = `class-time-info-${subject.replace(' ', '-')}`;
+            classTimeInfo.append('');
+            checkboxDiv.append(classTimeInfo);
+
             selectDiv.style.display = 'none';
             checkbox.addEventListener('change', e => {
                 if (checkbox.checked) {
                     selectDiv.style.display = 'inline-block';
+                    classTimeInfo.style.display = 'inline-block';
+                    classTimeInfo.innerHTML = '';
+                    for (let dayOfWeek = 0; dayOfWeek < 5; dayOfWeek++) {
+                        for (let period = 0; period < 6; period++) {
+                            const lesson = timetable[dayOfWeek][period];
+                            if (lesson.subject === subject && lesson.classIdentifier === select.value) {
+                                if (classTimeInfo.innerHTML !== '') classTimeInfo.innerHTML += '/';
+                                switch (dayOfWeek) {
+                                    case 0:
+                                    classTimeInfo.innerHTML += '월';
+                                    break;
+                                    case 1:
+                                    classTimeInfo.innerHTML += '화';
+                                    break;
+                                    case 2:
+                                    classTimeInfo.innerHTML += '수';
+                                    break;
+                                    case 3:
+                                    classTimeInfo.innerHTML += '목';
+                                    break;
+                                    case 4:
+                                    classTimeInfo.innerHTML += '금';
+                                }
+                                classTimeInfo.innerHTML += period + 1;
+                            }
+                        }
+                    }
                 } else {
                     selectDiv.style.display = 'none';
+                    classTimeInfo.style.display = 'none';
+                }
+            });
+            select.addEventListener('change', e => {
+                classTimeInfo.innerHTML = '';
+                for (let dayOfWeek = 0; dayOfWeek < 5; dayOfWeek++) {
+                    for (let period = 0; period < 6; period++) {
+                        const lesson = timetable[dayOfWeek][period];
+                        if (lesson.subject === subject && lesson.classIdentifier === select.value) {
+                            if (classTimeInfo.innerHTML !== '') classTimeInfo.innerHTML += '/';
+                            switch (dayOfWeek) {
+                                case 0:
+                                classTimeInfo.innerHTML += '월';
+                                break;
+                                case 1:
+                                classTimeInfo.innerHTML += '화';
+                                break;
+                                case 2:
+                                classTimeInfo.innerHTML += '수';
+                                break;
+                                case 3:
+                                classTimeInfo.innerHTML += '목';
+                                break;
+                                case 4:
+                                classTimeInfo.innerHTML += '금';
+                            }
+                            classTimeInfo.innerHTML += period + 1;
+                        }
+                    }
                 }
             });
         }
+
         field.append(checkboxDiv);
     }
     box.append(field);
@@ -92,6 +155,7 @@ async function createMainForm() {
     button.id = 'submit-main-form';
     button.append('선택 완료');
     button.addEventListener('click', onSubmitMainForm);
+    for (let classIdentifier of classIdentifiers.sort()) {
     box.append(button);
 
     mainContainer.append(box);
