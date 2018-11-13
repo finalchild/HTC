@@ -28,7 +28,7 @@ async function onSubmitClass() {
     nameMapping = await nameMappingP;
 
     const subjects = listSubjects(timetable);
-    optionalSubjects = optionalSubjects.filter(subject => subjects.includes(subject));
+    optionalSubjects = optionalSubjects.filter(subject => subjects.includes(subject) || subject === '---');
 
     await createMainForm();
 }
@@ -42,6 +42,11 @@ async function createMainForm() {
     const field = document.createElement('div');
     field.classList.add('field');
     for (let subject of optionalSubjects) {
+        if (subject === '---') {
+            field.append(document.createElement('hr'));
+            continue;
+        }
+        
         const checkboxDiv = document.createElement('div');
         checkboxDiv.classList.add('checkbox-div');
 
