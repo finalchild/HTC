@@ -116,20 +116,26 @@ async function onSubmitMainForm() {
         const thead = table.createTHead();
         const tr = document.createElement('tr');
         const th0 = document.createElement('th');
+        th0.classList.add('timetable-cell');
         tr.append(th0);
         const th1 = document.createElement('th');
+        th1.classList.add('timetable-cell');
         th1.append('월');
         tr.append(th1);
         const th2 = document.createElement('th');
+        th2.classList.add('timetable-cell');
         th2.append('화');
         tr.append(th2);
         const th3 = document.createElement('th');
+        th3.classList.add('timetable-cell');
         th3.append('수');
         tr.append(th3);
         const th4 = document.createElement('th');
+        th4.classList.add('timetable-cell');
         th4.append('목');
         tr.append(th4);
         const th5 = document.createElement('th');
+        th5.classList.add('timetable-cell');
         th5.append('금');
         tr.append(th5);
         thead.append(tr);
@@ -162,7 +168,14 @@ async function onSubmitMainForm() {
                 }
 
                 const cell = row.insertCell();
-                cell.append(lesson.subject);
+                cell.classList.add('timetable-cell');
+                if (lesson.subject.startsWith('자율')) {
+                    cell.append('자율');
+                } else if (lesson.subject.startsWith('동아리/행사')) {
+                    cell.append('동아리');
+                } else {
+                    cell.append(lesson.subject);
+                }
                 if (lesson.teacher && lesson.teacher !== '담임') {
                     const teacherSpan = document.createElement('span');
                     teacherSpan.classList.add('teacher');
@@ -175,7 +188,7 @@ async function onSubmitMainForm() {
                     roomSpan.append(lesson.room);
                     cell.append(document.createElement('br'), roomSpan);
                 }
-                if (lesson.empty) {
+                if (lesson.subject === '공강') {
                     cell.classList.add('empty-lesson');
                 }
                 if (lesson.room === '하우스') {
