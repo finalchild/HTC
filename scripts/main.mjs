@@ -151,8 +151,10 @@ async function onSubmitMainForm() {
                     switch (filteredLessons.length) {
                         case 0:
                         lesson = BLANK_LESSON;
+                        break;
                         case 1:
                         lesson = filteredLessons[0];
+                        break;
                         default:
                         console.log('could not make a timetable from the selections');
                         console.log(filteredLessons);
