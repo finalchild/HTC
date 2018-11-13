@@ -1,4 +1,4 @@
-import {listClassIdentifiers, listSubjects, retrieveOptionalSubjects, retrieveTimetable} from './timetable_handler.mjs';
+import {listClassIdentifiers, listSubjects, retrieveOptionalSubjects, retrieveTimetable, BLANK_LESSON} from './timetable_handler.mjs';
 
 const selectGrade = document.getElementById('select-grade');
 const selectLectureClass = document.getElementById('select-lecture-class');
@@ -102,14 +102,84 @@ async function onSubmitMainForm() {
         const subject = checkbox.value;
         const classIdentifiers = listClassIdentifiers(timetable, subject);
         let classIdentifier;
-        if (classIdentifiers.size == 1) {
+        if (classIdentifiers.size === 1) {
             classIdentifier = classIdentifiers[0];
         } else {
             const select = document.getElementById(`select-${subject.replace(' ', '-')}`);
             classIdentifier = select.value;
         }
-        return subject + (classIdentifier == null ? '' : classIdentifier);
+        return subject + (classIdentifier === null ? '' : classIdentifier);
     });
+
+    const table = document.createElement('table');
+    table.classList.add('table', 'is-bordered', 'is-striped');
+    {
+        const thead = table.createTHead();
+        const tr = document.createElement('tr');
+        const th0 = document.createElement('th');
+        tr.append(th0);
+        const th1 = document.createElement('th');
+        th1.append('월');
+        tr.append(th1);
+        const th2 = document.createElement('th');
+        th2.append('화');
+        tr.append(th2);
+        const th3 = document.createElement('th');
+        th3.append('수');
+        tr.append(th3);
+        const th4 = document.createElement('th');
+        th4.append('목');
+        tr.append(th4);
+        const th5 = document.createElement('th');
+        th5.append('금');
+        tr.append(th5);
+        thead.append(tr);
+    }
+    {
+        const rows;
+        for (let period = 0; period < 6; period++) {
+            const row = table.insertRow();
+            const th = document.createElement('th');
+            th.append(period + 1);
+            row.append(th);
+            for (let dayOfWeek = 0; dayOfWeek < 5; dayOfWeek++) {
+                const lessons = timetable[dayOfWeek][period];
+                let lesson;
+                if (lessons.size === 1 && !optionalSubjects.includes(lessons[0])) {
+                    lesson = lessons[0];
+                } else {
+                    lessons = lessons.filter(lesson => selected.includes(lesson.subjectWithClassIdentifier));
+                    switch(lessons.size) {
+                        case 0:
+                        lesson = BLANK_LESSON;
+                        case 1:
+                        lesson = lessons[0];
+                        default:
+                        console.log('could not make a timetable from the selections');
+                        return;
+                    }
+                }
+
+                const cell = row.insertCell();
+                cell.append(lesson.subject);
+                if (lesson.teacher) {
+                    const teacherSpan = document.createElement('span');
+                    teacherSpan.classList.add('teacher');
+                    teacherSpan.append(lesson.teacher);
+                    cell.append(document.createElement('br'), teacherSpan);
+                }
+                if (lesson.room) {
+                    const roomSpan = document.createElement('span');
+                    roomSpan.classList.add('room');
+                    roomSpan.append(lesson.room);
+                    cell.append(document.createElement('br'), roomSpan);
+                }
+                `<td {{#if empty}}style="background-color: #9197b5;"{{/if}}>{{subject}}{{#if teacher}}<br><span class="teacher">{{teacher}}</span>{{/if}}{{#if room}}<br><span class="room">{{room}}</span>{{/if}}</td>`
+            }
+            rows.push(row);
+        }
+    }
+
 
     console.log(selected);
 }
