@@ -44,14 +44,15 @@ async function createMainForm() {
         checkboxDiv.classList.add('checkbox-div');
 
         const checkbox = document.createElement('input');
-        checkbox.classList.add('is-checkradio', 'is-medium');
-        checkbox.setAttribute('type', 'checkbox');
-        checkbox.setAttribute('id', `checkbox-${subject.replace(' ', '-')}`);
-        checkbox.setAttribute('name', `checkbox-${subject.replace(' ', '-')}`);
+        checkbox.classList.add('is-checkradio', 'is-medium', 'checkbox-subject');
+        checkbox.type = 'checkbox';
+        checkbox.id = `checkbox-${subject.replace(' ', '-')}`;
+        checkbox.name = `checkbox-${subject.replace(' ', '-')}`;
+        checkbox.value = subject;
         checkboxDiv.append(checkbox);
 
         const label = document.createElement('label');
-        label.setAttribute('for', `checkbox-${subject.replace(' ', '-')}`);
+        label.htmlFor = `checkbox-${subject.replace(' ', '-')}`;
         label.append(subject);
         checkboxDiv.append(label);
 
@@ -59,12 +60,14 @@ async function createMainForm() {
         if (classIdentifiers.size > 1) {
             const selectDiv = document.createElement('div');
             selectDiv.classList.add('select', 'is-primary');
-            selectDiv.setAttribute('id', `select-${subject.replace(' ', '-')}`);
             const select = document.createElement('select');
+            select.classList.add('select-subject');
+            select.id = `select-${subject.replace(' ', '-')}`;
             for (let classIdentifier of Array.from(classIdentifiers).sort()) {
                 const option = document.createElement('option');
-                option.append(classIdentifier + '반');
-                select.append(option);
+                option.value = classIdentifier;
+                option.text = `${classIdentifier}반`;
+                select.add(option);
             }
             selectDiv.append(select);
             checkboxDiv.append(selectDiv);
@@ -84,7 +87,7 @@ async function createMainForm() {
 
     const button = document.createElement('button');
     button.classList.add('button', 'is-primary');
-    button.setAttribute('id', 'submit-main-form');
+    button.id = 'submit-main-form';
     button.append('선택 완료');
     button.addEventListener('click', onSubmitMainForm);
     box.append(button);
@@ -93,6 +96,20 @@ async function createMainForm() {
 }
 
 async function onSubmitMainForm() {
+    const selected = Array.from(document.getElementsByClassName('checkbox-subject'))
+    .filter(checkbox => checkbox.checked)
+    .map(checkbox => {
+        const subject = checkbox.value;
+        const classIdentifiers = listClassIdentifiers(timetable, subject);
+        let classIdentifier;
+        if (classIdentifiers.size == 1) {
+            classIdentifier = classIdentifier[0];
+        } else {
+            const select = document.getElementById(`select-${subject.replace(' ', '-')}`);
+            classIdentifier = select.value;
+        }
+        return subject + (classIdentifier == null ? '' : classIdentifier);
+    });
 
+    console.log(selected);
 }
-
