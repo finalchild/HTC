@@ -37,10 +37,6 @@ html {
     padding-bottom: 1em;
 }
 
-.is-checkradio[type=checkbox]+label::before, .is-checkradio[type=checkbox]+label:before, .is-checkradio[type=radio]+label::before, .is-checkradio[type=radio]+label:before {
-    top: auto;
-}
-
 #submit-main-form {
     margin-left: 0.7em;
 }
@@ -59,6 +55,7 @@ html {
 }
 
 input[disabled] + .checkbox-label::before {
+    top: auto;
     opacity: .5;
 }
 
