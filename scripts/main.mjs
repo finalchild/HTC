@@ -147,12 +147,12 @@ async function onSubmitMainForm() {
                 if (lessons.size === 1 && !optionalSubjects.includes(lessons[0])) {
                     lesson = lessons[0];
                 } else {
-                    lessons = lessons.filter(lesson => selected.includes(lesson.subjectWithClassIdentifier));
-                    switch(lessons.size) {
+                    const filteredLessons = lessons.filter(lesson => selected.includes(lesson.subjectWithClassIdentifier));
+                    switch(filteredLessons.size) {
                         case 0:
                         lesson = BLANK_LESSON;
                         case 1:
-                        lesson = lessons[0];
+                        lesson = filteredLessons[0];
                         default:
                         console.log('could not make a timetable from the selections');
                         return;
