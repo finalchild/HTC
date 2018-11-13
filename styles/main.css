@@ -34,10 +34,24 @@
 }
 
 .timetable-cell {
-    text-align: center;
+    text-align: center !important;
     vertical-align: middle !important;
-    width: 99px;
-    height: 89px;
+    width: 11vw;
+    height: 9vh;
+}
+
+.timetable-top {
+    text-align: center !important;
+    vertical-align: middle !important;
+    width: 11vw;
+    height: 3vh;
+}
+
+.timetable-left {
+    text-align: center !important;
+    vertical-align: middle !important;
+    width: 4vw;
+    height: 9vh;
 }
 
 .empty-lesson {

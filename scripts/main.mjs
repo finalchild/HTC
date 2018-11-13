@@ -116,26 +116,26 @@ async function onSubmitMainForm() {
         const thead = table.createTHead();
         const tr = document.createElement('tr');
         const th0 = document.createElement('th');
-        th0.classList.add('timetable-cell');
+        th0.classList.add('timetable-top');
         tr.append(th0);
         const th1 = document.createElement('th');
-        th1.classList.add('timetable-cell');
+        th1.classList.add('timetable-top');
         th1.append('월');
         tr.append(th1);
         const th2 = document.createElement('th');
-        th2.classList.add('timetable-cell');
+        th2.classList.add('timetable-top');
         th2.append('화');
         tr.append(th2);
         const th3 = document.createElement('th');
-        th3.classList.add('timetable-cell');
+        th3.classList.add('timetable-top');
         th3.append('수');
         tr.append(th3);
         const th4 = document.createElement('th');
-        th4.classList.add('timetable-cell');
+        th4.classList.add('timetable-top');
         th4.append('목');
         tr.append(th4);
         const th5 = document.createElement('th');
-        th5.classList.add('timetable-cell');
+        th5.classList.add('timetable-top');
         th5.append('금');
         tr.append(th5);
         thead.append(tr);
@@ -144,6 +144,7 @@ async function onSubmitMainForm() {
         for (let period = 0; period < 6; period++) {
             const row = table.insertRow();
             const th = document.createElement('th');
+            th.classList.add('timetable-left');
             th.append(period + 1);
             row.append(th);
             for (let dayOfWeek = 0; dayOfWeek < 5; dayOfWeek++) {
