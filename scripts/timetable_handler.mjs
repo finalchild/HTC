@@ -1,9 +1,11 @@
 export class Lesson {
+    /*
     subject;
     classIdentifier;
     teacher;
     room;
-
+    */
+   
     constructor(subjectWithClassIdentifier, teacher, room, empty) {
         if (empty) {
             this.subject = '공강';
