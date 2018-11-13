@@ -103,7 +103,7 @@ async function onSubmitMainForm() {
         const classIdentifiers = listClassIdentifiers(timetable, subject);
         let classIdentifier;
         if (classIdentifiers.size == 1) {
-            classIdentifier = classIdentifier[0];
+            classIdentifier = classIdentifiers[0];
         } else {
             const select = document.getElementById(`select-${subject.replace(' ', '-')}`);
             classIdentifier = select.value;
