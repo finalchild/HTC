@@ -45,6 +45,11 @@ html {
     margin-left: 0.7em;
 }
 
+.class-time-info {
+    vertical-align: middle;
+    margin-left: 1em;
+}
+
 .timetable-cell {
     text-align: center !important;
     vertical-align: middle !important;
