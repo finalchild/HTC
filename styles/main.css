@@ -32,3 +32,11 @@
 #submit-main-form {
     margin-left: 0.7rem;
 }
+
+.empty-lesson {
+    background-color: #9197b5;
+}
+
+.house-lesson {
+    background-color: hsl(141, 71%, 48%);
+}

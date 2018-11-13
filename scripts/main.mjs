@@ -35,6 +35,7 @@ submitClass.addEventListener('click', onSubmitClass);
 async function createMainForm() {
     const box = document.createElement('div');
     box.classList.add('box');
+    box.id = 'main-form-box';
     const field = document.createElement('div');
     field.classList.add('field');
     for (let subject of optionalSubjects) {
@@ -162,21 +163,27 @@ async function onSubmitMainForm() {
 
                 const cell = row.insertCell();
                 cell.append(lesson.subject);
-                if (lesson.teacher) {
+                if (lesson.teacher && lesson.teacher !== '담임') {
                     const teacherSpan = document.createElement('span');
                     teacherSpan.classList.add('teacher');
                     teacherSpan.append(lesson.teacher);
                     cell.append(document.createElement('br'), teacherSpan);
                 }
-                if (lesson.room) {
+                if (lesson.room && lesson.room !== '하우스') {
                     const roomSpan = document.createElement('span');
                     roomSpan.classList.add('room');
                     roomSpan.append(lesson.room);
                     cell.append(document.createElement('br'), roomSpan);
                 }
-                `<td {{#if empty}}style="background-color: #9197b5;"{{/if}}>{{subject}}{{#if teacher}}<br><span class="teacher">{{teacher}}</span>{{/if}}{{#if room}}<br><span class="room">{{room}}</span>{{/if}}</td>`
+                if (lesson.empty) {
+                    cell.classList.add('empty-lesson');
+                }
+                if (lesson.room === '하우스') {
+                    cell.classList.add('house-lesson')
+                }
             }
         }
     }
+    document.getElementById('main-form-box').style.display = 'none';
     mainContainer.append(table);
 }
