@@ -2,6 +2,18 @@
 @import url(//cdn.jsdelivr.net/npm/bulma-checkradio@2.1.0/dist/css/bulma-checkradio.min.css);
 @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
 
+@media all and (min-width: 800px) {
+html {
+    font-size: 15px;
+  }
+}
+
+@media all and (max-width: 800px) {
+html {
+    font-size: 3vw;
+  }
+}
+
 * {
     font-family: 'Spoqa Han Sans', sans-serif;
 }
@@ -36,29 +48,33 @@
 .timetable-cell {
     text-align: center !important;
     vertical-align: middle !important;
-    width: 11vw;
-    height: 9vh;
+    width: 10em;
+    height: 6em;
+    padding: .2em .2em !important;
 }
 
 .timetable-top {
     text-align: center !important;
     vertical-align: middle !important;
-    width: 11vw;
-    height: 3vh;
+    width: 1em;
+    height: 3em;
+    padding: .2em .2em !important;
 }
 
 .timetable-left {
     text-align: center !important;
     vertical-align: middle !important;
-    width: 4vw;
-    height: 9vh;
+    width: 3em;
+    height: 6em;
+    padding: .2em .2em !important;
 }
 
 .timetable-top-left {
     text-align: center !important;
     vertical-align: middle !important;
-    width: 4vw;
-    height: 3vh;
+    width: 1em;
+    height: 3em;
+    padding: .2em .2em;
 }
 
 .empty-lesson {
