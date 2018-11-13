@@ -63,6 +63,13 @@ export async function retrieveOptionalSubjects(grade) {
     return (await response.json())[grade - 1];
 }
 
+export async function retrieveSubjectNameMapping() {
+    const request = new Request('resources/subject_name_mapping.json');
+    const response = await fetch(request);
+
+    return new Map(Object.entries(await response.json()));
+}
+
 export function listSubjects(timetable) {
     const set = new Set();
     timetable.forEach(dayOfWeekTable => dayOfWeekTable.forEach(periodTable => periodTable.forEach(lesson => set.add(lesson.subject))));

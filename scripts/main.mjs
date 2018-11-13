@@ -10,6 +10,7 @@ let lectureClass;
 
 let timetable;
 let optionalSubjects;
+let nameMapping;
 
 async function onSubmitClass() {
     selectGrade.disabled = true;
@@ -21,8 +22,10 @@ async function onSubmitClass() {
 
     const timetableP = retrieveTimetable(grade, lectureClass);
     const optionalSubjectsP = retrieveOptionalSubjects(grade);
+    const nameMappingP = retrieveSubjectNameMapping();
     timetable = await timetableP;
     optionalSubjects = await optionalSubjectsP;
+    nameMapping = await nameMappingP;
 
     const subjects = listSubjects(timetable);
     optionalSubjects = optionalSubjects.filter(subject => subjects.includes(subject));
@@ -116,7 +119,7 @@ async function onSubmitMainForm() {
         const thead = table.createTHead();
         const tr = document.createElement('tr');
         const th0 = document.createElement('th');
-        th0.classList.add('timetable-top');
+        th0.classList.add('timetable-top-left');
         tr.append(th0);
         const th1 = document.createElement('th');
         th1.classList.add('timetable-top');
@@ -174,6 +177,8 @@ async function onSubmitMainForm() {
                     cell.append('자율');
                 } else if (lesson.subject.startsWith('동아리/행사')) {
                     cell.append('동아리');
+                } else if (nameMapping.has(lesson.subject)) {
+                    cell.append(nameMapping.get(lesson.subject));
                 } else {
                     cell.append(lesson.subject);
                 }
