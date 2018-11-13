@@ -33,9 +33,11 @@
     margin-left: 0.7rem;
 }
 
-.cell {
-    text-align: center !important;
+.timetable-cell {
+    text-align: center;
     vertical-align: middle !important;
+    width: 99px;
+    height: 89px;
 }
 
 .empty-lesson {
