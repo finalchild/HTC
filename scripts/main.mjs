@@ -88,8 +88,7 @@ async function createMainForm() {
                     classTimeInfo.innerHTML = '';
                     for (let dayOfWeek = 0; dayOfWeek < 5; dayOfWeek++) {
                         for (let period = 0; period < 6; period++) {
-                            const lesson = timetable[dayOfWeek][period];
-                            if (lesson.subject === subject && lesson.classIdentifier === select.value) {
+                            timetable[dayOfWeek][period].filter(lesson => lesson.subject === subject && lesson.classIdentifier === select.value).forEach(lesson => {
                                 if (classTimeInfo.innerHTML !== '') classTimeInfo.innerHTML += '/';
                                 switch (dayOfWeek) {
                                     case 0:
@@ -108,7 +107,7 @@ async function createMainForm() {
                                     classTimeInfo.innerHTML += '금';
                                 }
                                 classTimeInfo.innerHTML += period + 1;
-                            }
+                            });
                         }
                     }
                 } else {
