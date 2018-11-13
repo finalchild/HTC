@@ -155,6 +155,7 @@ async function onSubmitMainForm() {
                         lesson = filteredLessons[0];
                         default:
                         console.log('could not make a timetable from the selections');
+                        console.log(filteredLessons);
                         return;
                     }
                 }
