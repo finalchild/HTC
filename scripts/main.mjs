@@ -180,4 +180,5 @@ async function onSubmitMainForm() {
             }
         }
     }
+    mainContainer.append(table);
 }
