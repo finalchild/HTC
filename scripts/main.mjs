@@ -57,13 +57,13 @@ async function createMainForm() {
         checkboxDiv.append(label);
 
         const classIdentifiers = listClassIdentifiers(timetable, subject);
-        if (classIdentifiers.size > 1) {
+        if (classIdentifiers.length > 1) {
             const selectDiv = document.createElement('div');
             selectDiv.classList.add('select', 'is-primary');
             const select = document.createElement('select');
             select.classList.add('select-subject');
             select.id = `select-${subject.replace(' ', '-')}`;
-            for (let classIdentifier of Array.from(classIdentifiers).sort()) {
+            for (let classIdentifier of classIdentifiers.sort()) {
                 const option = document.createElement('option');
                 option.value = classIdentifier;
                 option.text = `${classIdentifier}반`;
@@ -102,7 +102,7 @@ async function onSubmitMainForm() {
         const subject = checkbox.value;
         const classIdentifiers = listClassIdentifiers(timetable, subject);
         let classIdentifier;
-        if (classIdentifiers.size === 1) {
+        if (classIdentifiers.length === 1) {
             classIdentifier = classIdentifiers[0];
         } else {
             const select = document.getElementById(`select-${subject.replace(' ', '-')}`);
@@ -144,11 +144,11 @@ async function onSubmitMainForm() {
             for (let dayOfWeek = 0; dayOfWeek < 5; dayOfWeek++) {
                 const lessons = timetable[dayOfWeek][period];
                 let lesson;
-                if (lessons.size === 1 && !optionalSubjects.includes(lessons[0])) {
+                if (lessons.length === 1 && !optionalSubjects.includes(lessons[0])) {
                     lesson = lessons[0];
                 } else {
                     const filteredLessons = lessons.filter(lesson => selected.includes(lesson.subjectWithClassIdentifier));
-                    switch(filteredLessons.size) {
+                    switch (filteredLessons.length) {
                         case 0:
                         lesson = BLANK_LESSON;
                         case 1:

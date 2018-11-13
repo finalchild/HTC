@@ -72,7 +72,7 @@ export function listSubjects(timetable) {
 export function listClassIdentifiers(timetable, subject) {
     const set = new Set();
     timetable.forEach(dayOfWeekTable => dayOfWeekTable.forEach(periodTable => periodTable.filter(lesson => lesson.subject === subject).forEach(lesson => set.add(lesson.classIdentifier))));
-    return set;
+    return Array.from(set);
 }
 
 export const BLANK_LESSON = new Lesson(null, null, null, true);
