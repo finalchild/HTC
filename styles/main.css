@@ -96,5 +96,5 @@ input[disabled] + .checkbox-label::before {
 }
 
 .house-lesson {
-    background-color: hsl(141, 71%, 48%);
+    background-color: #acc189;
 }
