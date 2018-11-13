@@ -155,7 +155,6 @@ async function createMainForm() {
     button.id = 'submit-main-form';
     button.append('선택 완료');
     button.addEventListener('click', onSubmitMainForm);
-    for (let classIdentifier of classIdentifiers.sort()) {
     box.append(button);
 
     mainContainer.append(box);
