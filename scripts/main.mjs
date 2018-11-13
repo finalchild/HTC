@@ -156,6 +156,7 @@ async function createMainForm() {
                 checkbox.checked = true;
                 checkbox.dispatchEvent(new Event('change'));
                 checkbox.disabled = true;
+                classTimeInfo.style.display = 'none';
             }
         }
 
