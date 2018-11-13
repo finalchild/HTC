@@ -54,6 +54,14 @@ html {
     margin: 0.5em 0;
 }
 
+.checkbox-label {
+    opacity: 1 !important;
+}
+
+input[disabled] + .checkbox-label::before {
+    opacity: .5;
+}
+
 .timetable-cell {
     text-align: center !important;
     vertical-align: middle !important;

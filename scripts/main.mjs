@@ -61,6 +61,7 @@ async function createMainForm() {
         checkboxDiv.append(checkbox);
 
         const label = document.createElement('label');
+        label.classList.add('checkbox-label');
         label.htmlFor = `checkbox-${subject.replace(' ', '-')}`;
         label.append(subject);
         checkboxDiv.append(label);
@@ -149,6 +150,13 @@ async function createMainForm() {
                     }
                 }
             });
+
+            // 수학과 영어 분반 수업을 따로 처리
+            if (subject === '수학' || subject === '영어') {
+                checkbox.checked = true;
+                checkbox.dispatchEvent(new Event('change'));
+                checkbox.disabled = true;
+            }
         }
 
         field.append(checkboxDiv);
