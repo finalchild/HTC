@@ -50,6 +50,10 @@ html {
     margin-left: 1em;
 }
 
+.main-form-divider {
+    margin: 0.5em 0;
+}
+
 .timetable-cell {
     text-align: center !important;
     vertical-align: middle !important;

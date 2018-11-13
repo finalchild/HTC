@@ -43,10 +43,12 @@ async function createMainForm() {
     field.classList.add('field');
     for (let subject of optionalSubjects) {
         if (subject === '---') {
-            field.append(document.createElement('hr'));
+            const hr = document.createElement('hr');
+            hr.classList.add('main-form-divider');
+            field.append(hr);
             continue;
         }
-        
+
         const checkboxDiv = document.createElement('div');
         checkboxDiv.classList.add('checkbox-div');
 
