@@ -18,6 +18,10 @@ html {
     font-family: 'Spoqa Han Sans', sans-serif;
 }
 
+.overflow-logo {
+    height: 1.75em;
+}
+
 #top-section {
     padding-bottom: 0;
 }
