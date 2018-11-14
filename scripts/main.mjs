@@ -41,7 +41,7 @@ async function createMainForm() {
     box.id = 'main-form-box';
     const field = document.createElement('div');
     field.classList.add('field');
-    for (let subject of optionalSubjects) {
+    for (const subject of optionalSubjects) {
         if (subject === '---') {
             const hr = document.createElement('hr');
             hr.classList.add('main-form-divider');
@@ -73,7 +73,7 @@ async function createMainForm() {
             const select = document.createElement('select');
             select.classList.add('select-subject');
             select.id = `select-${subject.replace(' ', '-')}`;
-            for (let classIdentifier of classIdentifiers.sort()) {
+            for (const classIdentifier of classIdentifiers.sort()) {
                 const option = document.createElement('option');
                 option.value = classIdentifier;
                 option.text = `${classIdentifier}반`;
