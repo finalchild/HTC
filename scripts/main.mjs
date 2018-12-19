@@ -255,7 +255,7 @@ async function onSubmitMainForm() {
                                 existing.parentNode.removeChild(existing);
                             }
                             const notification = document.createElement('div');
-                            notification.classList.add('notification', 'is-danger');
+                            notification.classList.add('notification', 'is-warning');
                             notification.id = 'error-notification';
                             const deleteButton = document.createElement('button');
                             deleteButton.classList.add('delete');
