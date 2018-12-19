@@ -260,7 +260,7 @@ async function onSubmitMainForm() {
                             const deleteButton = document.createElement('button');
                             deleteButton.classList.add('delete');
                             deleteButton.addEventListener('click', e => {
-                                notification.removeChild(deleteButton);
+                                mainContainer.removeChild(notification);
                             });
                             notification.append(deleteButton);
                             let filteredLessonsString = '';
