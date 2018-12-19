@@ -29,6 +29,14 @@ async function onSubmitClass() {
 
     const subjects = listSubjects(timetable);
     optionalSubjects = optionalSubjects.filter(subject => subjects.includes(subject) || subject === '---');
+    for (let i = 0; i < optionalSubjects.length; i++) {
+        while ((i === 0 || optionalSubjects[i - 1] === '---') && optionalSubjects[i] === '---') {
+            optionalSubjects.splice(i, 1);
+        }
+    }
+    if (!optionalSubjects.empty() && optionalSubjects[optionalSubjects.length - 1] === '---') {
+        optionalSubjects.pop();
+    }
 
     await createMainForm();
 }
