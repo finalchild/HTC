@@ -34,7 +34,7 @@ async function onSubmitClass() {
             optionalSubjects.splice(i, 1);
         }
     }
-    if (!optionalSubjects.empty() && optionalSubjects[optionalSubjects.length - 1] === '---') {
+    if (optionalSubjects.length !== 0 && optionalSubjects[optionalSubjects.length - 1] === '---') {
         optionalSubjects.pop();
     }
 
