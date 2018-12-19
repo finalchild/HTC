@@ -244,15 +244,28 @@ async function onSubmitMainForm() {
                     const filteredLessons = lessons.filter(lesson => selected.includes(lesson.subjectWithClassIdentifier));
                     switch (filteredLessons.length) {
                         case 0:
-                        lesson = BLANK_LESSON;
-                        break;
+                            lesson = BLANK_LESSON;
+                            break;
                         case 1:
-                        lesson = filteredLessons[0];
-                        break;
+                            lesson = filteredLessons[0];
+                            break;
                         default:
-                        console.log('could not make a timetable from the selections');
-                        console.log(filteredLessons);
-                        return;
+                            const existing = document.getElementById('error-notification');
+                            if (existing) {
+                                existing.parentNode.removeChild(existing);
+                            }
+                            const notification = document.createElement('div');
+                            notification.classList.add('notification', 'is-danger');
+                            notification.id = 'error-notification';
+                            const deleteButton = document.createElement('button');
+                            deleteButton.classList.add('delete');
+                            deleteButton.addEventListener('click', e => {
+                                notification.removeChild(deleteButton);
+                            });
+                            notification.append(deleteButton);
+                            notification.append('시간 충돌이 있습니다!\n' + filteredLessons);
+                            mainContainer.append(notification);
+                            return;
                     }
                 }
 
