@@ -197,7 +197,7 @@ async function onSubmitMainForm() {
         if (classIdentifiers.length === 1) {
             classIdentifier = classIdentifiers[0];
         } else {
-            const select = document.getElementById(`select-${subject.replace(' ', '-')}`);
+            const select = document.getElementById(`select-${subject.replace(/ /g, '-')}`);
             classIdentifier = select.value;
         }
         return subject + (classIdentifier === null ? '' : classIdentifier);
