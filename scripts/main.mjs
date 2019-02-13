@@ -290,13 +290,13 @@ async function onSubmitMainForm() {
                 } else {
                     cell.append(lesson.subject);
                 }
-                if (lesson.teacher && lesson.teacher !== '담임') {
+                if (lesson.teacher !== null && lesson.teacher !== '담임') {
                     const teacherSpan = document.createElement('span');
                     teacherSpan.classList.add('teacher');
                     teacherSpan.append(lesson.teacher);
                     cell.append(document.createElement('br'), teacherSpan);
                 }
-                if (lesson.room && lesson.room !== '하우스') {
+                if (lesson.room !== null && lesson.room !== '하우스') {
                     const roomSpan = document.createElement('span');
                     roomSpan.classList.add('room');
                     roomSpan.append(lesson.room);

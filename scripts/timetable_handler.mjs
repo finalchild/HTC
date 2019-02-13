@@ -7,18 +7,21 @@ export class Lesson {
     */
    
     constructor(subjectWithClassIdentifier, teacher, room, empty) {
+        if (empty === undefined) {
+            empty = false;
+        }
         if (empty) {
             this.subject = '공강';
             this.classIdentifier = null;
-            this.teacher = '';
-            this.room = '';
+            this.teacher = null;
+            this.room = null;
             return;
         }
         if (subjectWithClassIdentifier === '자율') {
             this.subject = '자율';
             this.classIdentifier = null;
-            this.teacher = '';
-            this.room = '';
+            this.teacher = null;
+            this.room = null;
             return;
         }
 
