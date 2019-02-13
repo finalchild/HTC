@@ -60,20 +60,22 @@ async function createMainForm() {
             continue;
         }
 
+        const subjectHyphenated = subject.replace(/ /g, '-');
+
         const checkboxDiv = document.createElement('div');
         checkboxDiv.classList.add('checkbox-div');
 
         const checkbox = document.createElement('input');
         checkbox.classList.add('is-checkradio', 'is-medium', 'checkbox-subject');
         checkbox.type = 'checkbox';
-        checkbox.id = `checkbox-${subject.replace(' ', '-')}`;
-        checkbox.name = `checkbox-${subject.replace(' ', '-')}`;
+        checkbox.id = `checkbox-${subjectHyphenated}`;
+        checkbox.name = `checkbox-${subjectHyphenated}`;
         checkbox.value = subject;
         checkboxDiv.append(checkbox);
 
         const label = document.createElement('label');
         label.classList.add('checkbox-label');
-        label.htmlFor = `checkbox-${subject.replace(' ', '-')}`;
+        label.htmlFor = `checkbox-${subjectHyphenated}`;
         label.append(subject);
         checkboxDiv.append(label);
 
@@ -83,7 +85,7 @@ async function createMainForm() {
             selectDiv.classList.add('select', 'is-primary');
             const select = document.createElement('select');
             select.classList.add('select-subject');
-            select.id = `select-${subject.replace(' ', '-')}`;
+            select.id = `select-${subjectHyphenated}`;
             for (const classIdentifier of classIdentifiers.sort()) {
                 const option = document.createElement('option');
                 option.value = classIdentifier;
