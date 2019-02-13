@@ -268,13 +268,8 @@ async function onSubmitMainForm() {
                                 mainContainer.removeChild(notification);
                             });
                             notification.append(deleteButton);
-                            let filteredLessonsString = '';
-                            for (let i = 0; i < filteredLessons.length; i++) {
-                                if (i !== 0) {
-                                    filteredLessonsString += ', ';
-                                }
-                                filteredLessonsString += filteredLessons[i].subjectWithClassIdentifier;
-                            }
+                            const filteredLessonsString = filteredLessons.
+                                map(lesson => lesson.subjectWithClassIdentifier).join(', ');
                             notification.append('시간 충돌이 있습니다!\n' + filteredLessonsString + '은(는) 동시에 선택할 수 없습니다!');
                             mainContainer.append(notification);
                             return;
