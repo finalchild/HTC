@@ -102,41 +102,20 @@ async function createMainForm() {
             checkboxDiv.append(classTimeInfo);
 
             selectDiv.style.display = 'none';
+
             checkbox.addEventListener('change', e => {
                 if (checkbox.checked) {
                     selectDiv.style.display = 'inline-block';
                     classTimeInfo.style.display = 'inline-block';
-                    classTimeInfo.innerHTML = '';
-                    for (let dayOfWeek = 0; dayOfWeek < 5; dayOfWeek++) {
-                        for (let period = 0; period < 6; period++) {
-                            timetable[dayOfWeek][period].filter(lesson => lesson.subject === subject && lesson.classIdentifier === select.value).forEach(lesson => {
-                                if (classTimeInfo.innerHTML !== '') classTimeInfo.innerHTML += '/';
-                                switch (dayOfWeek) {
-                                    case 0:
-                                    classTimeInfo.innerHTML += '월';
-                                    break;
-                                    case 1:
-                                    classTimeInfo.innerHTML += '화';
-                                    break;
-                                    case 2:
-                                    classTimeInfo.innerHTML += '수';
-                                    break;
-                                    case 3:
-                                    classTimeInfo.innerHTML += '목';
-                                    break;
-                                    case 4:
-                                    classTimeInfo.innerHTML += '금';
-                                }
-                                classTimeInfo.innerHTML += period + 1;
-                            });
-                        }
-                    }
+                    updateClassTimeInfo();
                 } else {
                     selectDiv.style.display = 'none';
                     classTimeInfo.style.display = 'none';
                 }
             });
-            select.addEventListener('change', e => {
+            select.addEventListener('change', updateClassTimeInfo);
+            
+            function updateClassTimeInfo() {
                 classTimeInfo.innerHTML = '';
                 for (let dayOfWeek = 0; dayOfWeek < 5; dayOfWeek++) {
                     for (let period = 0; period < 6; period++) {
@@ -162,7 +141,7 @@ async function createMainForm() {
                         });
                     }
                 }
-            });
+            }
 
             // 수학과 영어 분반 수업을 따로 처리
             if (subject === '수학' || subject === '영어') {
