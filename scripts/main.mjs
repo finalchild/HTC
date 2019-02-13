@@ -20,12 +20,15 @@ async function onSubmitClass() {
     grade = parseInt(selectGrade.options[selectGrade.selectedIndex].value);
     lectureClass = parseInt(selectLectureClass.options[selectLectureClass.selectedIndex].value);
 
-    const timetableP = retrieveTimetable(grade, lectureClass);
-    const optionalSubjectsP = retrieveOptionalSubjects(grade);
-    const nameMappingP = retrieveSubjectNameMapping();
-    timetable = await timetableP;
-    optionalSubjects = await optionalSubjectsP;
-    nameMapping = await nameMappingP;
+    [
+        timetable,
+        optionalSubjects,
+        nameMapping
+    ] = await Promise.all([
+        retrieveTimetable(grade, lectureClass),
+        retrieveOptionalSubjects(grade),
+        retrieveSubjectNameMapping()
+    ]);
 
     const subjects = listSubjects(timetable);
     optionalSubjects = optionalSubjects.filter(subject => subjects.includes(subject) || subject === '---');
