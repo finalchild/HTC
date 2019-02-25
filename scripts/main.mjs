@@ -1,25 +1,79 @@
+/**
+ * 메인 모듈. index.html에서 직접 참조함.
+ * @module main
+ */
+
 import {listClassIdentifiers, listSubjects, retrieveOptionalSubjects, retrieveSubjectNameMapping, retrieveTimetable, BLANK_LESSON} from './timetable_handler.mjs';
 
+/**
+ * 학년 선택 요소.
+ * @type {HTMLSelectElement}
+ */
 const selectGrade = document.getElementById('select-grade');
+/**
+ * 수업반 선택 요소.
+ * @type {HTMLSelectElement}
+ */
 const selectLectureClass = document.getElementById('select-lecture-class');
+/**
+ * 학년과 수업반 선택을 마치고 클릭하는 '시간표 만들기' 버튼 요소.
+ * @type {HTMLButtonElement}
+ */
 const submitClass = document.getElementById('submit-class');
+/**
+ * 선택지와 생성된 시간표를 표시하는 메인 컨테이너 요소.
+ * @type {HTMLDivElement}
+ */
 const mainContainer = document.getElementById('main-container');
 
+/**
+ * 학년. '시간표 만들기' 버튼을 클릭하면 넣어 줌. 1학년이면 1이고, 2학년이면 2, 3학년이면 3.
+ * @type {number}
+ */
 let grade;
+/**
+ * 수업반. '시간표 만들기' 버튼을 클릭하면 넣어 줌. 수업 1반이면 1이고, 수업 2반이면 2, 수업 3반이면 3, 수업 8반이면 8.
+ * @type {number}
+ */
 let lectureClass;
 
+/**
+ * 해당 수업반의 전체 시간표. 배열의 식별자는 0부터 시작함. '시간표 만들기' 버튼을 클릭하면 넣어 줌.
+ * `timetable[0][0]`은 월요일 1교시에 가능한 수업 목록이고, `timetable[4][5]`는 금요일 6교시에 가능한 수업 목록.
+ * @see module:timetable_handler.retrieveTimetable
+ * @type {Array<Array<Array<Lesson>>>}
+ */
 let timetable;
+/**
+ * 해당 학년에서, 수업반 전체가 같이 듣지 않는 과목명의 목록. '시간표 만들기' 버튼을 클릭하면 넣어 줌.
+ * 목록 안의 '---'는 과목 선택 화면에서 표시할 구분선을 의미함.
+ * 선택 과목 선택 폼을 만들기 위한 것이며, 폼에 필요하지 않은 과목은 중간에 거름.
+ * @see module:timetable_handler/retrieveOptionalSubjects
+ * @type {Array<string>}
+ */
 let optionalSubjects;
+/**
+ * 시간표를 생성해 표시할 때, 이름이 너무 긴 등의 이유로 다른 이름을 써야 할 경우의 대응 관계. '시간표 만들기' 버튼을 클릭하면 넣어 줌.
+ * @see module:timetable_handler/retrieveSubjectNameMapping
+ * @type {Array<string>}
+ */
 let nameMapping;
 
+/**
+ * 학년과 수업반을 선택하고 버튼을 눌렀을 때 실행되는 이벤트 리스너.
+ */
 async function onSubmitClass() {
+    // 학년, 수업반 선택 요소 및 '시간표 만들기' 버튼 요소를 비활성화
     selectGrade.disabled = true;
     selectLectureClass.disabled = true;
     submitClass.disabled = true;
 
+    // 선택된 학년과 수업반을 정수로 가져옴
     grade = parseInt(selectGrade.options[selectGrade.selectedIndex].value);
     lectureClass = parseInt(selectLectureClass.options[selectLectureClass.selectedIndex].value);
 
+    // 해당 학년과 수업반의 시간표, 선택 과목 목록, 이름 대응 관계를 가져오기
+    // `Promise.all`은 그 안에 있는 작업이 모두 완료되기를 기다리는 비동기 함수임
     [
         timetable,
         optionalSubjects,
@@ -30,8 +84,14 @@ async function onSubmitClass() {
         retrieveSubjectNameMapping()
     ]);
 
+    // 해당 수업반에서 수강할 수 있는 과목의 목록을 가져옴
     const subjects = listSubjects(timetable);
+
+    // 선택 과목의 목록 중에서, 해당 수업반에서 수강할 수 있는 것만 골라냄. 구분선은 남겨 둠
+    // `Array.prototype.filter`는 해당 조건을 만족하는 원소만 골라내는 메서드임.
     optionalSubjects = optionalSubjects.filter(subject => subjects.includes(subject) || subject === '---');
+    
+    // 시작이나 끝에 구분선이 있으면 없애고, 구분선이 연속해 있는 경우 하나만 남김.
     for (let i = 0; i < optionalSubjects.length; i++) {
         while ((i === 0 || optionalSubjects[i - 1] === '---') && optionalSubjects[i] === '---') {
             optionalSubjects.splice(i, 1);
@@ -41,11 +101,14 @@ async function onSubmitClass() {
         optionalSubjects.pop();
     }
 
-    await createMainForm();
+    await createMainForm(); // 선택 과목을 물어 보는 메인 폼을 표시
 }
 
-submitClass.addEventListener('click', onSubmitClass);
+submitClass.addEventListener('click', onSubmitClass); // onSubmitClass 이벤트 리스너 등록
 
+/**
+ * 선택 과목을 물어 보는 메인 폼을 표시.
+ */
 async function createMainForm() {
     const box = document.createElement('div');
     box.classList.add('box');
@@ -95,6 +158,7 @@ async function createMainForm() {
             selectDiv.append(select);
             checkboxDiv.append(selectDiv);
 
+            // 반 식별자를 선택했을 때, 수업 요일과 교시를 표시해 주는 텍스트 만들기
             const classTimeInfo = document.createElement('span');
             classTimeInfo.classList.add('class-time-info');
             classTimeInfo.id = `class-time-info-${subject.replace(' ', '-')}`;
@@ -114,11 +178,15 @@ async function createMainForm() {
                 }
             });
             select.addEventListener('change', updateClassTimeInfo);
-            
+
+            /**
+             * 반 식별자를 선택했을 때, 수업 요일과 교시를 표시해 주는 텍스트를 갱신하는 내부 함수.
+             */
             function updateClassTimeInfo() {
                 classTimeInfo.innerHTML = '';
                 for (let dayOfWeek = 0; dayOfWeek < 5; dayOfWeek++) {
                     for (let period = 0; period < 6; period++) {
+                        // 과목명과 반 식별자가 일치하면 그 요일과 교시를 `classTimeInfo`에 추가해 준다.
                         timetable[dayOfWeek][period].filter(lesson => lesson.subject === subject && lesson.classIdentifier === select.value).forEach(lesson => {
                             if (classTimeInfo.innerHTML !== '') classTimeInfo.innerHTML += '/';
                             switch (dayOfWeek) {
@@ -143,7 +211,7 @@ async function createMainForm() {
                 }
             }
 
-            // 수학과 영어 분반 수업을 따로 처리
+            // 수학과 영어 분반 수업은 과목 자체는 선택 해제할 수 없음. 반 식별자만 변경 가능함.
             if (subject === '수학' || subject === '영어') {
                 checkbox.checked = true;
                 checkbox.dispatchEvent(new Event('change'));
@@ -156,6 +224,7 @@ async function createMainForm() {
     }
     box.append(field);
 
+    // 선택 완료 버튼 만들기
     const button = document.createElement('button');
     button.classList.add('button', 'is-primary');
     button.id = 'submit-main-form';
@@ -166,6 +235,9 @@ async function createMainForm() {
     mainContainer.append(box);
 }
 
+/**
+ * 선택 과목 선택 메인 폼에서 '선택 완료' 버튼을 눌렀을 때 실행되는 이벤트 리스너.
+ */
 async function onSubmitMainForm() {
     const selected = Array.from(document.getElementsByClassName('checkbox-subject'))
     .filter(checkbox => checkbox.checked)
