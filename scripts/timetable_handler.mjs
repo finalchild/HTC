@@ -83,7 +83,7 @@ export class Lesson {
  */
 export async function retrieveTimetable(grade, lectureClass) {
     if (typeof grade !== 'number' || !Number.isSafeInteger(grade) || grade < 1 || grade > 3 || typeof lectureClass !== 'number' || !Number.isSafeInteger(lectureClass) || lectureClass < 1 || lectureClass > 8) {
-        throw 'Invalid grade or lectureClass!';
+        throw new Error('Invalid grade or lectureClass!');
     }
 
     const request = new Request(`resources/timetable${grade}.json`);
@@ -101,7 +101,7 @@ export async function retrieveTimetable(grade, lectureClass) {
  */
 export async function retrieveOptionalSubjects(grade) {
     if (typeof grade !== 'number' || !Number.isSafeInteger(grade) || grade < 1 || grade > 3) {
-        throw 'Invalid grade!';
+        throw new Error('Invalid grade!');
     }
 
     const request = new Request(`resources/optional_subjects.json`);
