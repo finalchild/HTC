@@ -393,7 +393,9 @@ export function renderPersonalTimetable(personalTimetable: Array<Array<Lecture>>
         const anchor = document.createElement('a');
         anchor.href = canvas.toDataURL();
         anchor.download = '시간표.png';
+        document.append(anchor);
         anchor.click();
+        document.removeChild(anchor);
     });
     document.getElementById('main-container').append(saveAsImageButton);
 }
