@@ -1,6 +1,6 @@
 /**
  * 시간표 관련 정보를 읽어 오는 등 UI와 직접적으로 연관이 없는 일을 하는 모듈.
- * '물리ⅠA'에서, '물리Ⅰ'을 과목(명), 'A'를 반 식별자라고 명명합니다.
+ * '물리ⅠA'에서, '물리Ⅰ'을 과목(명), 'A'를 반 식별자라고 명명함.
  * @module timetable_handler
  */
 
@@ -8,19 +8,32 @@
   * 수업 한 시간의 정보를 나타내는 클래스.
   */
 export class Lesson {
-    /*
-    subject;
-    classIdentifier;
-    teacher;
-    room;
-    */
+    /**
+     * @member {string} 반 식별자를 제외한 과목명.
+     */
+    // subject;
+
+    /**
+     * @member {string | null} 반 식별자.
+     */
+    // classIdentifier;
+
+    /**
+     * @member {string | null} 교사명. 담임 등 따로 표시할 필요가 없는 경우에는 null.
+     */
+    // teacher;
+
+    /**
+     * @member {string | null} 수업 교실. 하우스 교실 등 따로 표시할 필요가 없는 경우에는 null.
+     */
+    // room;
    
     /**
-     * 
-     * @param {string} subjectWithClassIdentifier 반 식별자가 있는 과목명. 반 식별자가 없는 경우에는 그냥 과목명. 예) '물리Ⅱ', '경제A'.
+     * 반 식별자를 붙인 과목명, 교사명, 수업 교실을 바탕으로 수업 정보 객체를 생성.
+     * @param {string} subjectWithClassIdentifier 반 식별자를 붙인 과목명. 반 식별자가 없는 경우에는 그냥 과목명. 예) '물리Ⅱ', '경제A'.
      * @param {string | null} teacher 교사명. 담임 등 따로 표시할 필요가 없는 경우에는 null.
      * @param {string | null} room 수업 교실. 하우스 교실 등 따로 표시할 필요가 없는 경우에는 null.
-     * @param {boolean | undefined} empty 공강 여부. true이면 공강이며 undefined이면 false로 취급. 
+     * @param {boolean | undefined} empty 공강 여부. true이면 공강. false이면 공강 아님. 기본값(undefined인 경우) false. 
      */
     constructor(subjectWithClassIdentifier, teacher, room, empty) {
         // empty를 설정하지 않으면 기본값 false
@@ -62,9 +75,9 @@ export class Lesson {
     }
 
     /**
-     * 반 식별자가 있는 과목명을 가져옴.
+     * 반 식별자를 붙인 과목명을 가져옴.
      * @readonly
-     * @returns {string} 반 식별자가 있는 과목명. 예) '경제A'.
+     * @returns {string} 반 식별자를 붙인 과목명. 예) '경제A'.
      */
     get subjectWithClassIdentifier() {
         if (this.classIdentifier != null) {
