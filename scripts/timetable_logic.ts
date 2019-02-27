@@ -421,7 +421,10 @@ export function renderPersonalTimetable(personalTimetable: Array<Array<Lesson>>)
             table.style.width = null;
             table.style.height = null;
         } else {
-            canvas = await html2canvas(table);
+            canvas = await html2canvas(table, {
+                windowWidth: 720,
+                windowHeight: 900
+            });
         }
         const anchor = document.createElement('a');
         anchor.href = canvas.toDataURL();
