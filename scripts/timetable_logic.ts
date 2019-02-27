@@ -415,7 +415,7 @@ export function renderPersonalTimetable(personalTimetable: Array<Array<Lesson>>)
         const canvas = await html2canvas(table, {
             width: 720,
             height: 850,
-            windowWidth: 600,
+            windowWidth: 720,
             windowHeight: 900
         });
         table.style.width = null;
