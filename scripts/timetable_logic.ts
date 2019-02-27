@@ -4,49 +4,47 @@
  * @module timetable_logic
  */
 
-import {listClassIdentifiers, listSubjects, retrieveOptionalSubjects, retrieveSubjectNameMapping, retrieveTimetable, BLANK_LESSON} from './timetable_handler.mjs';
-import {showErrorNotification, removeErrorNotification} from './util.mjs';
+import html2canvas from 'html2canvas';
+import {Lesson, listClassIdentifiers, listSubjects, retrieveOptionalSubjects, retrieveSubjectNameMapping, retrieveTimetable, BLANK_LESSON} from './timetable_handler';
+import {showErrorNotification, removeErrorNotification} from './util';
 
 /**
  * 학년. '시간표 만들기' 버튼을 클릭하면 넣어 줌. 1학년이면 1이고, 2학년이면 2, 3학년이면 3.
- * @type {number}
  */
-let grade;
+let grade: number;
 /**
  * 수업반. '시간표 만들기' 버튼을 클릭하면 넣어 줌. 수업 1반이면 1이고, 수업 2반이면 2, 수업 3반이면 3, 수업 8반이면 8.
- * @type {number}
  */
-let lectureClass;
+let lectureClass: number;
 
 /**
  * 해당 수업반의 전체 시간표. 배열의 식별자는 0부터 시작함. '시간표 만들기' 버튼을 클릭하면 넣어 줌.
  * `timetable[0][0]`은 월요일 1교시에 가능한 수업 목록이고, `timetable[4][5]`는 금요일 6교시에 가능한 수업 목록.
  * @see module:timetable_handler.retrieveTimetable
- * @type {Array<Array<Array<Lesson>>>}
  */
-let timetable;
+let timetable: Array<Array<Array<Lesson>>>;
 /**
  * 시간표를 생성해 표시할 때, 이름이 너무 긴 등의 이유로 다른 이름을 써야 할 경우의 대응 관계. '시간표 만들기' 버튼을 클릭하면 넣어 줌.
+ * 
  * @see module:timetable_handler/retrieveSubjectNameMapping
- * @type {Array<string>}
  */
-let nameMapping;
+let nameMapping: Map<string, string>;
 /**
  * 해당 학년에서, 수업반 전체가 같이 듣지 않는 과목명의 목록. '시간표 만들기' 버튼을 클릭하면 넣어 줌.
  * 목록 안의 '---'는 과목 선택 화면에서 표시할 구분선을 의미함.
  * 선택 과목 선택 폼을 만들기 위한 것이며, 폼에 필요하지 않은 과목은 중간에 거름.
+ * 
  * @see module:timetable_handler/retrieveOptionalSubjects
- * @type {Array<string>}
  */
-let optionalSubjects;
+let optionalSubjects: Array<string>;
 
 /**
  * 학년과 수업반을 선택하고 버튼을 눌렀을 때 실행되는 이벤트 리스너.
  */
 export async function onSubmitClass() {
-    const selectGrade = document.getElementById('select-grade');
-    const selectLectureClass = document.getElementById('select-lecture-class');
-    const submitClass = document.getElementById('submit-class');
+    const selectGrade = <HTMLSelectElement>document.getElementById('select-grade');
+    const selectLectureClass = <HTMLSelectElement>document.getElementById('select-lecture-class');
+    const submitClass = <HTMLButtonElement>document.getElementById('submit-class');
 
     // 학년, 수업반 선택 요소 및 '시간표 만들기' 버튼 요소를 비활성화
     selectGrade.disabled = true;
@@ -92,7 +90,7 @@ export async function onSubmitClass() {
 /**
  * 선택 과목을 물어 보는 메인 폼을 표시.
  */
-export async function createMainForm() {
+export async function createMainForm(): Promise<void> {
     const box = document.createElement('div');
     box.classList.add('box');
     box.id = 'main-form-box';
@@ -221,7 +219,7 @@ export async function createMainForm() {
 /**
  * 선택 과목 선택 메인 폼에서 '선택 완료' 버튼을 눌렀을 때 실행되는 이벤트 리스너.
  */
-export async function onSubmitMainForm() {
+export async function onSubmitMainForm(): Promise<void> {
     const checkboxes = Array.from(document.getElementsByClassName('checkbox-subject'));
     const subjects = checkboxes.map(checkbox => checkbox.value);
     const checkedSubjects = checkboxes.filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
@@ -229,9 +227,8 @@ export async function onSubmitMainForm() {
     /**
      * 선택한, 반 식별자를 붙인 과목명의 목록.
      * 체크박스 중에서 선택한 것들만 골라낸 뒤 추가 작업을 해 만듬.
-     * @type Array<string> 
      */
-    const checkedSubjectsWithClassIdentifier = checkedSubjects.map(subject => {
+    const checkedSubjectsWithClassIdentifier: Array<string> = checkedSubjects.map(subject => {
         const classIdentifiers = listClassIdentifiers(timetable, subject);
         let classIdentifier;
         // 가능한 반 식별자가 하나밖에 없으면 그것으로 결정. 여러 개가 있으면 드롭다운 리스트에서 선택한 반 식별자를 사용.
@@ -256,9 +253,8 @@ export async function onSubmitMainForm() {
     /**
      * 완성된 개인 시간표 정보. 배열의 식별자는 0부터 시작함.
      * `personalTimetable[0][0]`은 월요일 1교시에 듣는 수업, `personalTimetable[4][5]`는 금요일 6교시에 듣는 수업.
-     * @type Array<Array<Lecture>>
      */
-    const personalTimetable = [];
+    const personalTimetable: Array<Array<Lecture>> = [];
     for (let dayOfWeek = 0; dayOfWeek < 5; dayOfWeek++) {
         // 2차원 배열이므로 안에 배열을 넣어 줘야 함
         personalTimetable[dayOfWeek] = [];
@@ -299,9 +295,9 @@ export async function onSubmitMainForm() {
 
 /**
  * 개인 시간표를 보여 줌.
- * @param personalTimetable {Array<Array<Lecture>>} 완성된 개인 시간표 정보. 배열의 식별자는 0부터 시작함. `personalTimetable[0][0]`은 월요일 1교시에 듣는 수업, `personalTimetable[4][5]`는 금요일 6교시에 듣는 수업.
+ * @param personalTimetable - 완성된 개인 시간표 정보. 배열의 식별자는 0부터 시작함. `personalTimetable[0][0]`은 월요일 1교시에 듣는 수업, `personalTimetable[4][5]`는 금요일 6교시에 듣는 수업.
  */
-export function renderPersonalTimetable(personalTimetable) {
+export function renderPersonalTimetable(personalTimetable: Array<Array<Lecture>>) {
     // 학년/수업반 선택, 메인 폼, 오류 알림 제거
     document.getElementById('lecture-class-control').style.display = 'none';
     document.getElementById('main-form-box').style.display = 'none';
@@ -387,4 +383,17 @@ export function renderPersonalTimetable(personalTimetable) {
     }
 
     document.getElementById('main-container').append(table);
+
+    const saveAsImageButton = document.createElement('button');
+    saveAsImageButton.classList.add('button', 'is-primary');
+    saveAsImageButton.id = 'save-as-image';
+    saveAsImageButton.append('이미지로 저장');
+    saveAsImageButton.addEventListener('click', async () => {
+        const canvas = await html2canvas(document.body);
+        const anchor = document.createElement('a');
+        anchor.href = canvas.toDataURL();
+        anchor.download = '시간표.png';
+        anchor.click();
+    });
+    document.getElementById('main-container').append(saveAsImageButton);
 }

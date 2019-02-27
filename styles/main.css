@@ -1,6 +1,6 @@
-@import url(//cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css);
-@import url(//cdn.jsdelivr.net/npm/bulma-checkradio@2.1.0/dist/css/bulma-checkradio.min.css);
-@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
+@import url(https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css);
+@import url(https://cdn.jsdelivr.net/npm/bulma-checkradio@2.1.0/dist/css/bulma-checkradio.min.css);
+@import url(https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
 
 @media all and (min-width: 800px) {
 html {

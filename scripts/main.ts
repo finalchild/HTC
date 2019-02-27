@@ -4,8 +4,8 @@
  * @module main
  */
 
-import {onSubmitClass} from './timetable_logic.mjs'
-import {openOverflowModal, closeOverflowModal} from './util.mjs';
+import {onSubmitClass} from './timetable_logic'
+import {openOverflowModal, closeOverflowModal} from './util';
 
 document.getElementById('submit-class').addEventListener('click', onSubmitClass);
 

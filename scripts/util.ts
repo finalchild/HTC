@@ -6,23 +6,24 @@
  /**
   * 오버플로 모달(오버플로 소개글)을 열어 표시.
   */
-export function openOverflowModal() {
+export function openOverflowModal(): void {
     document.getElementById('overflow-modal-container').classList.add('is-active');
 }
 
  /**
   * 오버플로 모달(오버플로 소개글)을 닫음.
   */
-export function closeOverflowModal() {
+export function closeOverflowModal(): void {
     document.getElementById('overflow-modal-container').classList.remove('is-active');
 }
 
 /**
  * 과목 선택 오류 알림을 표시.
  * 이미 오류 알림이 있으면 이전 알림은 제거함.
- * @param message {string} 오류 메시지.
+ * 
+ * @param message - 오류 메시지.
  */
-export function showErrorNotification(message) {
+export function showErrorNotification(message: string): void {
     const mainContainer = document.getElementById('main-container');
     removeErrorNotification();
     const notification = document.createElement('div');
@@ -41,7 +42,7 @@ export function showErrorNotification(message) {
 /**
  * 과목 선택 오류 알림을 제거.
  */
-export function removeErrorNotification() {
+export function removeErrorNotification(): void {
     const existing = document.getElementById('error-notification');
     if (existing) {
         existing.parentNode.removeChild(existing);
