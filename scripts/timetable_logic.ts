@@ -410,14 +410,19 @@ export function renderPersonalTimetable(personalTimetable: Array<Array<Lesson>>)
     downloadAsImageButton.append('이미지로 다운로드');
     downloadAsImageButton.addEventListener('click', async () => {
         downloadAsImageButton.disabled = true;
-        table.style.width = '720px';
-        table.style.height = '850px';
-        const canvas = await html2canvas(table, {
-            windowWidth: 720,
-            windowHeight: 900
-        });
-        table.style.width = null;
-        table.style.height = null;
+        let canvas;
+        if (window.screen.width >= 900) {
+            table.style.width = '720px';
+            table.style.height = '850px';
+            canvas = await html2canvas(table, {
+                windowWidth: 720,
+                windowHeight: 900
+            });
+            table.style.width = null;
+            table.style.height = null;
+        } else {
+            canvas = await html2canvas(table);
+        }
         const anchor = document.createElement('a');
         anchor.href = canvas.toDataURL();
         anchor.download = '시간표.png';
