@@ -412,18 +412,15 @@ export function renderPersonalTimetable(personalTimetable: Array<Array<Lesson>>)
         downloadAsImageButton.disabled = true;
         let canvas;
         if (window.innerWidth >= 800) {
-            table.style.width = '720px';
-            table.style.height = '850px';
+            table.style.width = '800px';
             canvas = await html2canvas(table, {
-                windowWidth: 720,
-                windowHeight: 900
+                windowWidth: 800
             });
             table.style.width = null;
             table.style.height = null;
         } else {
             canvas = await html2canvas(table, {
-                windowWidth: 720,
-                windowHeight: 900
+                windowWidth: 800
             });
         }
         const anchor = document.createElement('a');
