@@ -222,16 +222,16 @@ export async function createMainForm() {
  * 선택 과목 선택 메인 폼에서 '선택 완료' 버튼을 눌렀을 때 실행되는 이벤트 리스너.
  */
 export async function onSubmitMainForm() {
+    const checkboxes = Array.from(document.getElementsByClassName('checkbox-subject'));
+    const subjects = checkboxes.map(checkbox => checkbox.value);
+    const checkedSubjects = checkboxes.filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
+
     /**
      * 선택한, 반 식별자를 붙인 과목명의 목록.
      * 체크박스 중에서 선택한 것들만 골라낸 뒤 추가 작업을 해 만듬.
      * @type Array<string> 
      */
-    const selected = Array.from(document.getElementsByClassName('checkbox-subject'))
-    .filter(checkbox => checkbox.checked)
-    .map(checkbox => {
-        const subject = checkbox.value;
-
+    const checkedSubjectsWithClassIdentifier = checkedSubjects.map(subject => {
         const classIdentifiers = listClassIdentifiers(timetable, subject);
         let classIdentifier;
         // 가능한 반 식별자가 하나밖에 없으면 그것으로 결정. 여러 개가 있으면 드롭다운 리스트에서 선택한 반 식별자를 사용.
@@ -245,6 +245,13 @@ export async function onSubmitMainForm() {
         // 반 식별자를 붙인 과목명으로 만듬.
         return subject + (classIdentifier === null ? '' : classIdentifier);
     });
+
+    // 스포츠과학과 스포츠문화가 있는데 둘 모두 선택하지 않았을 경우 오류
+    // 단, 과목을 하나도 선택하지 않고 필수 과목 시간표만 보는 경우가 있으므로 그 경우는 오류로 판정하지 않음
+    if (checkedSubjects.length !== 0 && subjects.includes('스포츠과학') && subjects.includes('스포츠문화') && !checkedSubjects.includes('스포츠과학') && !checkedSubjects.includes('스포츠문화')) {
+        showErrorNotification('스포츠과학과 스포츠문화 중 하나는 선택해야 합니다. 남자는 스포츠과학, 여자는 스포츠문화입니다.');
+        return;
+    }
 
     /**
      * 완성된 개인 시간표 정보. 배열의 식별자는 0부터 시작함.
@@ -266,7 +273,7 @@ export async function onSubmitMainForm() {
             // 그런 경우가 아니면
             } else {
                 // 들을 수 있는 과목 중에 선택한 과목만 골라냄
-                const filteredLessons = lessons.filter(lesson => selected.includes(lesson.subjectWithClassIdentifier));
+                const filteredLessons = lessons.filter(lesson => checkedSubjectsWithClassIdentifier.includes(lesson.subjectWithClassIdentifier));
                 switch (filteredLessons.length) {
                     case 0:
                         // 골라낸 것이 0개이면 공강
@@ -295,7 +302,8 @@ export async function onSubmitMainForm() {
  * @param personalTimetable {Array<Array<Lecture>>} 완성된 개인 시간표 정보. 배열의 식별자는 0부터 시작함. `personalTimetable[0][0]`은 월요일 1교시에 듣는 수업, `personalTimetable[4][5]`는 금요일 6교시에 듣는 수업.
  */
 export function renderPersonalTimetable(personalTimetable) {
-    // 메인 폼과 오류 알림 제거
+    // 학년/수업반 선택, 메인 폼, 오류 알림 제거
+    document.getElementById('lecture-class-control').style.display = 'none';
     document.getElementById('main-form-box').style.display = 'none';
     removeErrorNotification();
 

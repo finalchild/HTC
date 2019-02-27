@@ -19,16 +19,13 @@ html {
     word-break: keep-all;
 }
 
+.footer {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
 .overflow-logo {
     height: 1.75em;
-}
-
-#top-section {
-    padding-bottom: 0;
-}
-
-#main-section {
-    padding-top: 30px;
 }
 
 .checkbox-div {
@@ -37,9 +34,10 @@ html {
     height: 4.25em;
 }
 
-.box {
+#main-form-box {
     padding-top: 1em;
     padding-bottom: 1em;
+    margin-top: 2em;
 }
 
 #submit-main-form {

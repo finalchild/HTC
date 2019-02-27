@@ -23,6 +23,7 @@ export function closeOverflowModal() {
  * @param message {string} 오류 메시지.
  */
 export function showErrorNotification(message) {
+    const mainContainer = document.getElementById('main-container');
     removeErrorNotification();
     const notification = document.createElement('div');
     notification.classList.add('notification', 'is-warning');
