@@ -411,7 +411,7 @@ export function renderPersonalTimetable(personalTimetable: Array<Array<Lesson>>)
     downloadAsImageButton.addEventListener('click', async () => {
         downloadAsImageButton.disabled = true;
         let canvas;
-        if (window.screen.width >= 900) {
+        if (window.innerWidth >= 800) {
             table.style.width = '720px';
             table.style.height = '850px';
             canvas = await html2canvas(table, {
