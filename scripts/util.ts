@@ -7,14 +7,14 @@
   * 오버플로 모달(오버플로 소개글)을 열어 표시.
   */
 export function openOverflowModal(): void {
-    document.getElementById('overflow-modal-container').classList.add('is-active');
+    document.getElementById('overflow-modal-container')!.classList.add('is-active');
 }
 
  /**
   * 오버플로 모달(오버플로 소개글)을 닫음.
   */
 export function closeOverflowModal(): void {
-    document.getElementById('overflow-modal-container').classList.remove('is-active');
+    document.getElementById('overflow-modal-container')!.classList.remove('is-active');
 }
 
 /**
@@ -24,7 +24,7 @@ export function closeOverflowModal(): void {
  * @param message - 오류 메시지.
  */
 export function showErrorNotification(message: string): void {
-    const mainContainer = document.getElementById('main-container');
+    const mainContainer = document.getElementById('main-container')!;
     removeErrorNotification();
     const notification = document.createElement('div');
     notification.classList.add('notification', 'is-warning');
@@ -45,6 +45,6 @@ export function showErrorNotification(message: string): void {
 export function removeErrorNotification(): void {
     const existing = document.getElementById('error-notification');
     if (existing) {
-        existing.parentNode.removeChild(existing);
+        existing.parentNode!.removeChild(existing);
     }
 }

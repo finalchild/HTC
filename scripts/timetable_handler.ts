@@ -31,12 +31,12 @@ export class Lesson {
     /**
      * 반 식별자를 붙인 과목명, 교사명, 수업 교실을 바탕으로 수업 정보 객체를 생성.
      * 
-     * @param subjectWithClassIdentifier - 반 식별자를 붙인 과목명. 반 식별자가 없는 경우에는 그냥 과목명. 예) '물리Ⅱ', '경제A'.
+     * @param subjectWithClassIdentifier - 반 식별자를 붙인 과목명. 반 식별자가 없는 경우에는 그냥 과목명. 예) '물리Ⅱ', '경제A'. 공강인 경우에는 null도 허용.
      * @param teacher - 교사명. 담임 등 따로 표시할 필요가 없는 경우에는 null.
      * @param room - 수업 교실. 하우스 교실 등 따로 표시할 필요가 없는 경우에는 null.
      * @param empty - 공강 여부. true이면 공강. false이면 공강 아님. 기본값(undefined인 경우) false. 
      */
-    constructor(subjectWithClassIdentifier: string, teacher: string | null, room: string | null, empty: boolean = false) {
+    constructor(subjectWithClassIdentifier: string | null, teacher: string | null, room: string | null, empty: boolean = false) {
 
         // empty가 true면 공강이므로 그에 맞게 설정
         if (empty) {
@@ -58,11 +58,11 @@ export class Lesson {
 
         // 과목명에서 마지막 글자가 A~H 중 하나이면 마지막 글자는 반 식별자임
         // 아니면 반 식별자는 없음
-        if (/^[A-H]$/.test(subjectWithClassIdentifier.charAt(subjectWithClassIdentifier.length - 1))) {
-            this.subject = subjectWithClassIdentifier.substring(0, subjectWithClassIdentifier.length - 1);
-            this.classIdentifier = subjectWithClassIdentifier.substring(subjectWithClassIdentifier.length - 1, subjectWithClassIdentifier.length);
+        if (/^[A-H]$/.test(subjectWithClassIdentifier!.charAt(subjectWithClassIdentifier!.length - 1))) {
+            this.subject = subjectWithClassIdentifier!.substring(0, subjectWithClassIdentifier!.length - 1);
+            this.classIdentifier = subjectWithClassIdentifier!.substring(subjectWithClassIdentifier!.length - 1, subjectWithClassIdentifier!.length);
         } else {
-            this.subject = subjectWithClassIdentifier;
+            this.subject = subjectWithClassIdentifier!;
             this.classIdentifier = null;
         }
 

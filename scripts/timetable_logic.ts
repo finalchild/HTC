@@ -147,23 +147,11 @@ export async function createMainForm(): Promise<void> {
             checkboxDiv.append(classTimeInfo);
 
             selectDiv.style.display = 'none';
-
-            checkbox.addEventListener('change', e => {
-                if (checkbox.checked) {
-                    selectDiv.style.display = 'inline-block';
-                    classTimeInfo.style.display = 'inline-block';
-                    updateClassTimeInfo();
-                } else {
-                    selectDiv.style.display = 'none';
-                    classTimeInfo.style.display = 'none';
-                }
-            });
-            select.addEventListener('change', updateClassTimeInfo);
-
+            
             /**
              * 반 식별자를 선택했을 때, 수업 요일과 교시를 표시해 주는 텍스트를 갱신하는 내부 함수.
              */
-            function updateClassTimeInfo() {
+            const updateClassTimeInfo = () => {
                 classTimeInfo.innerHTML = '';
                 for (let dayOfWeek = 0; dayOfWeek < 5; dayOfWeek++) {
                     for (let period = 0; period < 6; period++) {
@@ -192,6 +180,18 @@ export async function createMainForm(): Promise<void> {
                 }
             }
 
+            checkbox.addEventListener('change', e => {
+                if (checkbox.checked) {
+                    selectDiv.style.display = 'inline-block';
+                    classTimeInfo.style.display = 'inline-block';
+                    updateClassTimeInfo();
+                } else {
+                    selectDiv.style.display = 'none';
+                    classTimeInfo.style.display = 'none';
+                }
+            });
+            select.addEventListener('change', updateClassTimeInfo);
+
             // 수학과 영어 분반 수업은 과목 자체는 선택 해제할 수 없음. 반 식별자만 변경 가능함.
             if (subject === '수학' || subject === '영어') {
                 checkbox.checked = true;
@@ -213,14 +213,14 @@ export async function createMainForm(): Promise<void> {
     button.addEventListener('click', onSubmitMainForm);
     box.append(button);
 
-    document.getElementById('main-container').append(box);
+    document.getElementById('main-container')!.append(box);
 }
 
 /**
  * 선택 과목 선택 메인 폼에서 '선택 완료' 버튼을 눌렀을 때 실행되는 이벤트 리스너.
  */
 export async function onSubmitMainForm(): Promise<void> {
-    const checkboxes = Array.from(document.getElementsByClassName('checkbox-subject'));
+    const checkboxes = <Array<HTMLInputElement>>Array.from(document.getElementsByClassName('checkbox-subject'));
     const subjects = checkboxes.map(checkbox => checkbox.value);
     const checkedSubjects = checkboxes.filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
 
@@ -235,7 +235,7 @@ export async function onSubmitMainForm(): Promise<void> {
         if (classIdentifiers.length === 1) {
             classIdentifier = classIdentifiers[0];
         } else {
-            const select = document.getElementById(`select-${subject.replace(/ /g, '-')}`);
+            const select = <HTMLSelectElement>document.getElementById(`select-${subject.replace(/ /g, '-')}`);
             classIdentifier = select.value;
         }
 
@@ -254,7 +254,7 @@ export async function onSubmitMainForm(): Promise<void> {
      * 완성된 개인 시간표 정보. 배열의 식별자는 0부터 시작함.
      * `personalTimetable[0][0]`은 월요일 1교시에 듣는 수업, `personalTimetable[4][5]`는 금요일 6교시에 듣는 수업.
      */
-    const personalTimetable: Array<Array<Lecture>> = [];
+    const personalTimetable: Array<Array<Lesson>> = [];
     for (let dayOfWeek = 0; dayOfWeek < 5; dayOfWeek++) {
         // 2차원 배열이므로 안에 배열을 넣어 줘야 함
         personalTimetable[dayOfWeek] = [];
@@ -297,10 +297,10 @@ export async function onSubmitMainForm(): Promise<void> {
  * 개인 시간표를 보여 줌.
  * @param personalTimetable - 완성된 개인 시간표 정보. 배열의 식별자는 0부터 시작함. `personalTimetable[0][0]`은 월요일 1교시에 듣는 수업, `personalTimetable[4][5]`는 금요일 6교시에 듣는 수업.
  */
-export function renderPersonalTimetable(personalTimetable: Array<Array<Lecture>>) {
+export function renderPersonalTimetable(personalTimetable: Array<Array<Lesson>>) {
     // 학년/수업반 선택, 메인 폼, 오류 알림 제거
-    document.getElementById('lecture-class-control').style.display = 'none';
-    document.getElementById('main-form-box').style.display = 'none';
+    document.getElementById('lecture-class-control')!.style.display = 'none';
+    document.getElementById('main-form-box')!.style.display = 'none';
     removeErrorNotification();
 
     // 표의 시작
@@ -337,7 +337,7 @@ export function renderPersonalTimetable(personalTimetable: Array<Array<Lecture>>
         const row = table.insertRow();
         const th = document.createElement('th');
         th.classList.add('timetable-left');
-        th.append(period + 1);
+        th.append((period + 1).toString());
         row.append(th);
         for (let dayOfWeek = 0; dayOfWeek < 5; dayOfWeek++) {
             const lesson = personalTimetable[dayOfWeek][period];
@@ -351,7 +351,7 @@ export function renderPersonalTimetable(personalTimetable: Array<Array<Lecture>>
             } else if (lesson.subject.startsWith('동아리/행사')) {
                 cell.append('동아리');
             } else if (nameMapping.has(lesson.subject)) {
-                cell.append(nameMapping.get(lesson.subject));
+                cell.append(nameMapping.get(lesson.subject)!);
             } else {
                 cell.append(lesson.subject);
             }
@@ -382,20 +382,31 @@ export function renderPersonalTimetable(personalTimetable: Array<Array<Lecture>>
         }
     }
 
-    document.getElementById('main-container').append(table);
+    document.getElementById('main-container')!.append(table);
 
     const saveAsImageButton = document.createElement('button');
     saveAsImageButton.classList.add('button', 'is-primary');
     saveAsImageButton.id = 'save-as-image';
-    saveAsImageButton.append('이미지로 저장');
+    saveAsImageButton.append('잠금 화면용 이미지 다운로드');
     saveAsImageButton.addEventListener('click', async () => {
-        const canvas = await html2canvas(document.body);
+        saveAsImageButton.disabled = true;
+        table.style.width = '720px';
+        table.style.height = '850px';
+        const canvas = await html2canvas(table, {
+            width: 720,
+            height: 850,
+            windowWidth: 720,
+            windowHeight: 850
+        });
+        table.style.width = null;
+        table.style.height = null;
         const anchor = document.createElement('a');
         anchor.href = canvas.toDataURL();
         anchor.download = '시간표.png';
         document.body.append(anchor);
         anchor.click();
         document.body.removeChild(anchor);
+        saveAsImageButton.disabled = false;
     });
-    document.getElementById('main-container').append(saveAsImageButton);
+    document.getElementById('main-container')!.append(saveAsImageButton);
 }

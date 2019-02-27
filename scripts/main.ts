@@ -7,10 +7,10 @@
 import {onSubmitClass} from './timetable_logic'
 import {openOverflowModal, closeOverflowModal} from './util';
 
-document.getElementById('submit-class').addEventListener('click', onSubmitClass);
+document.getElementById('submit-class')!.addEventListener('click', onSubmitClass);
 
-document.getElementById('overflow-anchor').addEventListener('click', openOverflowModal);
+document.getElementById('overflow-anchor')!.addEventListener('click', openOverflowModal);
 
-document.getElementById('close-overflow-modal').addEventListener('click', closeOverflowModal);
+document.getElementById('close-overflow-modal')!.addEventListener('click', closeOverflowModal);
 
-document.getElementById('overflow-modal-background').addEventListener('click', closeOverflowModal);
+document.getElementById('overflow-modal-background')!.addEventListener('click', closeOverflowModal);
