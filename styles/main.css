@@ -16,6 +16,7 @@ html {
 
 * {
     font-family: 'Spoqa Han Sans', sans-serif;
+    word-break: keep-all;
 }
 
 .overflow-logo {
