@@ -262,10 +262,10 @@ export async function onSubmitMainForm(): Promise<void> {
         return subject + (classIdentifier === null ? '' : classIdentifier);
     });
 
-    // 스포츠과학과 스포츠문화가 있는데 둘 모두 선택하지 않았을 경우 오류
+    // 체육탐구와 스포츠생활이 있는데 둘 모두 선택하지 않았을 경우 오류
     // 단, 과목을 하나도 선택하지 않고 필수 과목 시간표만 보는 경우가 있으므로 그 경우는 오류로 판정하지 않음
-    if (checkedSubjects.length !== 0 && subjects.includes('스포츠과학') && subjects.includes('스포츠문화') && !checkedSubjects.includes('스포츠과학') && !checkedSubjects.includes('스포츠문화')) {
-        showErrorNotification('스포츠과학과 스포츠문화 중 하나는 선택해야 합니다. 남자는 스포츠과학, 여자는 스포츠문화입니다.');
+    if (checkedSubjects.length !== 0 && subjects.includes('체육탐구') && subjects.includes('스포츠생활') && !checkedSubjects.includes('체육탐구') && !checkedSubjects.includes('스포츠생활')) {
+        showErrorNotification('체육탐구와 스포츠생활 중 하나는 선택해야 합니다. 남자는 체육탐구, 여자는 스포츠생활입니다.');
         return;
     }
 
