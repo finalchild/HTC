@@ -1,17 +1,31 @@
-@import url(https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css);
-@import url(https://cdn.jsdelivr.net/npm/bulma-checkradio@2.1.0/dist/css/bulma-checkradio.min.css);
+@import url(bulma/css/bulma.min.css);
+@import url(bulma-checkradio/dist/css/bulma-checkradio.min.css);
+@import url(bulma-switch/dist/css/bulma-switch.min.css);
 @import url(https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
 
 @media all and (min-width: 800px) {
-html {
-    font-size: 15px;
-  }
+    html {
+        font-size: 15px;
+    }
 }
 
 @media all and (max-width: 800px) {
-html {
-    font-size: 3vw;
-  }
+    html {
+        font-size: 3vw;
+    }
+
+    section {
+        padding-left: 3.5vw !important;
+        padding-right: 3.5vw !important;
+    }
+
+    .timetable-cell {
+        width: 17.5vw !important;
+    }
+
+    .timetable-left {
+        width: 5.5vw !important;
+    }
 }
 
 * {
@@ -94,10 +108,12 @@ input[disabled] + .checkbox-label::before {
     padding: .2em .2em;
 }
 
-.empty-lesson {
-    background-color: #9197b5;
+#kj-colors-label {
+    vertical-align: middle;
+    margin-left: 2em;
+    padding-top: 0;
 }
 
-.house-lesson {
-    background-color: #acc189;
+.kj-color * {
+    border-color: black !important;
 }

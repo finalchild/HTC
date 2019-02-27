@@ -37,7 +37,6 @@ export class Lesson {
      * @param empty - 공강 여부. true이면 공강. false이면 공강 아님. 기본값(undefined인 경우) false. 
      */
     constructor(subjectWithClassIdentifier: string | null, teacher: string | null, room: string | null, empty: boolean = false) {
-
         // empty가 true면 공강이므로 그에 맞게 설정
         if (empty) {
             this.subject = '공강';
@@ -126,6 +125,27 @@ export async function retrieveSubjectNameMapping(): Promise<Map<string, string>>
     const response = await fetch(request);
 
     return new Map(Object.entries(<{[key: string]: string}>await response.json()));
+}
+
+/**
+ * resources/kj_colors.json 파일을 가져와 과목에서 색을 반환하는 함수를 반환함.
+ * kj는 경준의 약자임. 디자이너 멋져요.
+ */
+export async function retrieveKjColors(): Promise<(subject: string) => string> {
+    const request = new Request('resources/kj_colors.json');
+    const response = await fetch(request);
+    
+    const data = <{[key: string]: string}>await response.json();
+
+    return subject => {
+        for (const [subjectSubstring, color] of Object.entries(data)) {
+            const split = subjectSubstring.split('!');
+            if (subject.includes(split[0]) && split.slice(1).filter(neg => subject.includes(neg)).length === 0) {
+                return color;
+            }
+        }
+        return data.default;
+    }
 }
 
 /**

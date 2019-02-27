@@ -5,7 +5,7 @@
  */
 
 import html2canvas from 'html2canvas';
-import {Lesson, listClassIdentifiers, listSubjects, retrieveOptionalSubjects, retrieveSubjectNameMapping, retrieveTimetable, BLANK_LESSON} from './timetable_handler';
+import {Lesson, listClassIdentifiers, listSubjects, retrieveOptionalSubjects, retrieveSubjectNameMapping, retrieveTimetable, BLANK_LESSON, retrieveKjColors} from './timetable_handler';
 import {showErrorNotification, removeErrorNotification} from './util';
 
 /**
@@ -37,6 +37,23 @@ let nameMapping: Map<string, string>;
  * @see module:timetable_handler/retrieveOptionalSubjects
  */
 let optionalSubjects: Array<string>;
+/**
+ * 과목에서 색을 반환하는 함수. '시간표 만들기' 버튼을 클릭하면 넣어 줌.
+ * kj는 경준의 약자임.
+ * 
+ * @see module:timetable_handler/retrieveKjColors
+ */
+let kjColors: (subject: string) => string;
+
+const defaultColors: (subject: string) => string = subject => {
+    if (subject.includes('공강')) {
+        return '#9197b5';
+    } else if (subject.includes('자율') || subject.includes('동아리')) {
+        return '#acc189'
+    } else {
+        return '#ffffff'
+    }
+}
 
 /**
  * 학년과 수업반을 선택하고 버튼을 눌렀을 때 실행되는 이벤트 리스너.
@@ -60,11 +77,13 @@ export async function onSubmitClass() {
     [
         timetable,
         optionalSubjects,
-        nameMapping
+        nameMapping,
+        kjColors
     ] = await Promise.all([
         retrieveTimetable(grade, lectureClass),
         retrieveOptionalSubjects(grade),
-        retrieveSubjectNameMapping()
+        retrieveSubjectNameMapping(),
+        retrieveKjColors()
     ]);
 
     // 해당 수업반에서 수강할 수 있는 과목의 목록을 가져옴
@@ -298,6 +317,8 @@ export async function onSubmitMainForm(): Promise<void> {
  * @param personalTimetable - 완성된 개인 시간표 정보. 배열의 식별자는 0부터 시작함. `personalTimetable[0][0]`은 월요일 1교시에 듣는 수업, `personalTimetable[4][5]`는 금요일 6교시에 듣는 수업.
  */
 export function renderPersonalTimetable(personalTimetable: Array<Array<Lesson>>) {
+    const mainContainer = document.getElementById('main-container')!;
+
     // 학년/수업반 선택, 메인 폼, 오류 알림 제거
     document.getElementById('lecture-class-control')!.style.display = 'none';
     document.getElementById('main-form-box')!.style.display = 'none';
@@ -306,8 +327,11 @@ export function renderPersonalTimetable(personalTimetable: Array<Array<Lesson>>)
     // 표의 시작
     const table = document.createElement('table');
     table.classList.add('table', 'is-bordered', 'is-striped');
+    document.getElementById('main-container')!.append(table);
+
     const thead = table.createTHead();
     const tr = document.createElement('tr');
+    thead.append(tr);
     const th0 = document.createElement('th');
     th0.classList.add('timetable-top-left');
     tr.append(th0);
@@ -331,7 +355,6 @@ export function renderPersonalTimetable(personalTimetable: Array<Array<Lesson>>)
     th5.classList.add('timetable-top');
     th5.append('금');
     tr.append(th5);
-    thead.append(tr);
 
     for (let period = 0; period < 6; period++) {
         const row = table.insertRow();
@@ -372,31 +395,28 @@ export function renderPersonalTimetable(personalTimetable: Array<Array<Lesson>>)
                 cell.append(document.createElement('br'), roomSpan);
             }
 
-            // 공강과 하우스 시간은 별도 스타일 적용
-            if (lesson.subject === '공강') {
-                cell.classList.add('empty-lesson');
-            }
-            if (lesson.room === '하우스') {
-                cell.classList.add('house-lesson')
-            }
+            cell.dataset.subject = lesson.subject;
+            cell.style.backgroundColor = defaultColors(lesson.subject);
         }
     }
 
-    document.getElementById('main-container')!.append(table);
+    const bottomContainer = document.createElement('div');
+    bottomContainer.id = 'bottom-container';
+    mainContainer.append(bottomContainer);
 
-    const saveAsImageButton = document.createElement('button');
-    saveAsImageButton.classList.add('button', 'is-primary');
-    saveAsImageButton.id = 'save-as-image';
-    saveAsImageButton.append('잠금 화면용 이미지 다운로드');
-    saveAsImageButton.addEventListener('click', async () => {
-        saveAsImageButton.disabled = true;
+    const downloadAsImageButton = document.createElement('button');
+    downloadAsImageButton.classList.add('button', 'is-primary');
+    downloadAsImageButton.id = 'download-as-image';
+    downloadAsImageButton.append('이미지로 다운로드');
+    downloadAsImageButton.addEventListener('click', async () => {
+        downloadAsImageButton.disabled = true;
         table.style.width = '720px';
-        table.style.height = '850px';
+        table.style.height = '851px';
         const canvas = await html2canvas(table, {
             width: 720,
             height: 850,
-            windowWidth: 720,
-            windowHeight: 850
+            windowWidth: 600,
+            windowHeight: 900
         });
         table.style.width = null;
         table.style.height = null;
@@ -406,7 +426,34 @@ export function renderPersonalTimetable(personalTimetable: Array<Array<Lesson>>)
         document.body.append(anchor);
         anchor.click();
         document.body.removeChild(anchor);
-        saveAsImageButton.disabled = false;
+        downloadAsImageButton.disabled = false;
     });
-    document.getElementById('main-container')!.append(saveAsImageButton);
+    bottomContainer.append(downloadAsImageButton);
+    
+    const kjColorsSwitch = document.createElement('input');
+    kjColorsSwitch.type = 'checkbox';
+    kjColorsSwitch.classList.add('switch', 'is-rounded');
+    kjColorsSwitch.id = 'kj-colors-switch';
+    kjColorsSwitch.name = 'kj-colors-switch';
+    bottomContainer.append(kjColorsSwitch);
+
+    const kjColorsLabel = document.createElement('label');
+    kjColorsLabel.id = 'kj-colors-label';
+    kjColorsLabel.htmlFor = 'kj-colors-switch';
+    kjColorsLabel.append('알록달록 모드');
+    bottomContainer.append(kjColorsLabel);
+
+    kjColorsSwitch.addEventListener('change', () => {
+        if (kjColorsSwitch.checked) {
+            (<Array<HTMLTableCellElement>>Array.from(document.getElementsByClassName('timetable-cell'))).forEach(cell => {
+                cell.style.backgroundColor = kjColors(cell.dataset.subject!);
+            });
+            table.classList.add('kj-color');
+        } else {
+            (<Array<HTMLTableCellElement>>Array.from(document.getElementsByClassName('timetable-cell'))).forEach(cell => {
+                cell.style.backgroundColor = defaultColors(cell.dataset.subject!);
+            });
+            table.classList.remove('kj-color');
+        }
+    });
 }

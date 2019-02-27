@@ -1,6 +1,16 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "lib": [
+      "DOM",
+      "ES5",
+      
+      "ES2015.Core",
+      "ES2015.Collection",
+      "ES2015.Iterable",
+      "ES2015.Promise",
+      "ES2016.Array.Include"
+    ],
     "module": "commonjs",
     "declaration": false,
     "declarationMap": false,
