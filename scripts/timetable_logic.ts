@@ -392,6 +392,17 @@ export function renderPersonalTimetable(personalTimetable: Array<Array<Lesson>>)
                 const roomSpan = document.createElement('span');
                 roomSpan.classList.add('room');
                 roomSpan.append(lesson.room);
+                if (lesson.room === '???') {
+                    roomSpan.style.textDecoration = 'underline';
+                    roomSpan.addEventListener('click', () => {
+                        const answer = window.prompt('교실이 어디인가요?');
+                        if (answer !== null) {
+                            roomSpan.innerHTML = '';
+                            roomSpan.append(answer);
+                            roomSpan.style.textDecoration = null;
+                        }
+                    });
+                }
                 cell.append(document.createElement('br'), roomSpan);
             }
 
