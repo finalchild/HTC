@@ -116,7 +116,6 @@ export async function createMainForm(): Promise<void> {
     box.id = 'main-form-box';
     const field = document.createElement('div');
     field.classList.add('field');
-    console.log('lol1');
     for (const subject of optionalSubjects) {
         if (subject === '---') {
             const hr = document.createElement('hr');
@@ -224,7 +223,6 @@ export async function createMainForm(): Promise<void> {
 
         field.append(checkboxDiv);
     }
-    console.log('lol2');
     box.append(field);
 
     // 선택 완료 버튼 만들기
@@ -399,7 +397,7 @@ export function renderPersonalTimetable(personalTimetable: Array<Array<Lesson>>)
                     roomSpan.style.textDecoration = 'underline';
                     roomSpan.addEventListener('click', () => {
                         const answer = window.prompt('교실이 어디인가요?');
-                        if (answer !== null) {
+                        if (answer !== null && answer !== '') {
                             roomSpan.innerHTML = '';
                             roomSpan.append(answer);
                             roomSpan.style.textDecoration = null;
