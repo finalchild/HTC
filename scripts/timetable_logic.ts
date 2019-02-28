@@ -5,6 +5,7 @@
  */
 
 import html2canvas from 'html2canvas';
+import { saveAs } from 'file-saver';
 import {Lesson, listClassIdentifiers, listSubjects, retrieveOptionalSubjects, retrieveSubjectNameMapping, retrieveTimetable, BLANK_LESSON, retrieveKjColors} from './timetable_handler';
 import {showErrorNotification, removeErrorNotification} from './util';
 
@@ -115,6 +116,7 @@ export async function createMainForm(): Promise<void> {
     box.id = 'main-form-box';
     const field = document.createElement('div');
     field.classList.add('field');
+    console.log('lol1');
     for (const subject of optionalSubjects) {
         if (subject === '---') {
             const hr = document.createElement('hr');
@@ -222,6 +224,7 @@ export async function createMainForm(): Promise<void> {
 
         field.append(checkboxDiv);
     }
+    console.log('lol2');
     box.append(field);
 
     // 선택 완료 버튼 만들기
@@ -421,7 +424,8 @@ export function renderPersonalTimetable(personalTimetable: Array<Array<Lesson>>)
     downloadAsImageButton.append('이미지로 다운로드');
     downloadAsImageButton.addEventListener('click', async () => {
         downloadAsImageButton.disabled = true;
-        let canvas;
+        let canvas: HTMLCanvasElement | null;
+        /**
         if (window.innerWidth >= 800) {
             table.style.width = '800px';
             canvas = await html2canvas(table, {
@@ -430,16 +434,15 @@ export function renderPersonalTimetable(personalTimetable: Array<Array<Lesson>>)
             table.style.width = null;
             table.style.height = null;
         } else {
+            */
             canvas = await html2canvas(table, {
                 windowWidth: 800
             });
-        }
-        const anchor = document.createElement('a');
-        anchor.href = canvas.toDataURL();
-        anchor.download = '시간표.png';
-        document.body.append(anchor);
-        anchor.click();
-        document.body.removeChild(anchor);
+        // }
+        const blob = await new Promise((resolve, reject) => canvas!.toBlob(blob => {
+            if (blob !== null) resolve(blob); else reject();
+        }));
+        saveAs(blob, '시간표.png');
         downloadAsImageButton.disabled = false;
     });
     bottomContainer.append(downloadAsImageButton);

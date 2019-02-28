@@ -4,7 +4,13 @@
  * @module main
  */
 
-import {onSubmitClass} from './timetable_logic'
+// import 'core-js/es6/promise';
+import 'whatwg-fetch';
+import 'mdn-polyfills/Node.prototype.append';
+import 'events-polyfill';
+import 'blob';
+import 'canvas-toBlob';
+import {onSubmitClass} from './timetable_logic';
 import {openOverflowModal, closeOverflowModal} from './util';
 
 document.getElementById('submit-class')!.addEventListener('click', onSubmitClass);
