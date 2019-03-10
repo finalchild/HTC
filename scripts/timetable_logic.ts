@@ -440,6 +440,7 @@ export function renderPersonalTimetable(personalTimetable: Array<Array<Lesson>>)
     openInHgrAppButton.addEventListener('click', async () => {
         window.open('htc://한가람시간표.한국/hgrapp?data=' + encodeURIComponent(JSON.stringify(timetable)));
     });
+    bottomContainer.append(openInHgrAppButton);
     
     const kjColorsSwitch = document.createElement('input');
     kjColorsSwitch.type = 'checkbox';
