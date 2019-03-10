@@ -422,21 +422,9 @@ export function renderPersonalTimetable(personalTimetable: Array<Array<Lesson>>)
     downloadAsImageButton.append('이미지로 다운로드');
     downloadAsImageButton.addEventListener('click', async () => {
         downloadAsImageButton.disabled = true;
-        let canvas: HTMLCanvasElement | null;
-        /**
-        if (window.innerWidth >= 800) {
-            table.style.width = '800px';
-            canvas = await html2canvas(table, {
-                windowWidth: 800
-            });
-            table.style.width = null;
-            table.style.height = null;
-        } else {
-            */
-            canvas = await html2canvas(table, {
-                windowWidth: 800
-            });
-        // }
+        let canvas: HTMLCanvasElement = await html2canvas(table, {
+            windowWidth: 800
+        });
         const blob = await new Promise((resolve, reject) => canvas!.toBlob(blob => {
             if (blob !== null) resolve(blob); else reject();
         }));
@@ -444,6 +432,14 @@ export function renderPersonalTimetable(personalTimetable: Array<Array<Lesson>>)
         downloadAsImageButton.disabled = false;
     });
     bottomContainer.append(downloadAsImageButton);
+
+    const openInHgrAppButton = document.createElement('button');
+    openInHgrAppButton.classList.add('button');
+    openInHgrAppButton.id = 'open-in-hgr-app';
+    openInHgrAppButton.append('한가람 앱으로 내보내기');
+    openInHgrAppButton.addEventListener('click', async () => {
+        window.open('htc://한가람시간표.한국/hgrapp?data=' + encodeURIComponent(JSON.stringify(timetable)));
+    });
     
     const kjColorsSwitch = document.createElement('input');
     kjColorsSwitch.type = 'checkbox';
