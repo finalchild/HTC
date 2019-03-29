@@ -438,7 +438,7 @@ export function renderPersonalTimetable(personalTimetable: Array<Array<Lesson>>)
     openInHgrAppButton.id = 'open-in-hgr-app';
     openInHgrAppButton.append('한가람 앱으로 내보내기');
     openInHgrAppButton.addEventListener('click', async () => {
-        window.open('htc://xn--o39ai969f8llbkv0lb.xn--3e0b707e/hgrapp?data=' + encodeURIComponent(JSON.stringify(timetable)));
+        window.open('htc://xn--o39ai969f8llbkv0lb.xn--3e0b707e/hgrapp?data=' + encodeURIComponent(JSON.stringify(personalTimetable)));
     });
     bottomContainer.append(openInHgrAppButton);
     
