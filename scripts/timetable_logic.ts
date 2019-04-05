@@ -451,7 +451,7 @@ export function renderPersonalTimetable(personalTimetable: Array<Array<Lesson>>)
             } else {
                 result.subject = lesson.subject;
             }
-        
+
             return result;
         })))));
     });
