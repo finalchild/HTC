@@ -22,20 +22,20 @@
   "homepage": "https://github.com/finalchild/HTC#readme",
   "dependencies": {
     "blob": "0.0.5",
-    "bulma": "^0.7.4",
+    "bulma": "^0.7.5",
     "bulma-checkradio": "^2.1.0",
     "bulma-switch": "^2.0.0",
     "canvas-toBlob": "^1.0.0",
-    "core-js": "^2.6.5",
-    "events-polyfill": "^2.1.0",
-    "file-saver": "^2.0.1",
+    "core-js": "^3.1.4",
+    "events-polyfill": "^2.1.2",
+    "file-saver": "^2.0.2",
     "html2canvas": "^1.0.0-alpha.12",
-    "mdn-polyfills": "^5.16.0",
+    "mdn-polyfills": "^5.17.0",
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
-    "parcel-bundler": "^1.11.0",
-    "parcel-plugin-static-files-copy": "^2.0.0",
-    "typescript": "^3.3.3333"
+    "parcel-bundler": "^1.12.3",
+    "parcel-plugin-static-files-copy": "^2.1.2",
+    "typescript": "^3.5.2"
   }
 }
