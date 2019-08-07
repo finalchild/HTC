@@ -1,7 +1,7 @@
 {
   "name": "htc",
   "version": "1.0.0",
-  "description": "",
+  "description": "Automatically generates personal timetables in Hangaram High School.",
   "main": "index.js",
   "directories": {
     "lib": "lib"
@@ -14,7 +14,7 @@
     "type": "git",
     "url": "git+https://github.com/finalchild/HTC.git"
   },
-  "author": "",
+  "author": "Final Child",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/finalchild/HTC/issues"
