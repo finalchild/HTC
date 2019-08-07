@@ -154,7 +154,7 @@ export async function retrieveKjColors(): Promise<(subject: string) => string> {
  * @returns 과목명의 목록.
  */
 export function listSubjects(timetable: Array<Array<Array<Lesson>>>): Array<string> {
-    const set = new Set();
+    const set = new Set<string>();
     timetable.forEach(dayOfWeekTable => dayOfWeekTable.forEach(periodTable => periodTable.forEach(lesson => set.add(lesson.subject))));
     return Array.from(set);
 }
