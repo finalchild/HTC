@@ -135,4 +135,4 @@ var e,t=arguments[3];!function(t,o){"function"==typeof e&&e.amd?e([],o):"undefin
 },{"html2canvas":"Tt9E","file-saver":"i0aF","./timetable_handler":"B4Zf","./util":"z9H4"}],"KUU8":[function(require,module,exports) {
 "use strict";Object.defineProperty(exports,"__esModule",{value:!0}),require("whatwg-fetch"),require("mdn-polyfills/Node.prototype.append"),require("events-polyfill"),require("blob"),require("canvas-toBlob");var e=require("./timetable_logic"),l=require("./util");document.getElementById("submit-class").addEventListener("click",e.onSubmitClass),document.getElementById("overflow-anchor").addEventListener("click",l.openOverflowModal),document.getElementById("close-overflow-modal").addEventListener("click",l.closeOverflowModal),document.getElementById("overflow-modal-background").addEventListener("click",l.closeOverflowModal);
 },{"whatwg-fetch":"MScu","mdn-polyfills/Node.prototype.append":"9D33","events-polyfill":"0fVn","blob":"D08t","canvas-toBlob":"EQlm","./timetable_logic":"A/fj","./util":"z9H4"}]},{},["KUU8"], null)
-//# sourceMappingURL=/main.f3da35f6.js.map
+//# sourceMappingURL=/main.3aeb4029.js.map
