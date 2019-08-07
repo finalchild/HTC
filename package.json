@@ -30,12 +30,12 @@
     "events-polyfill": "^2.1.2",
     "file-saver": "^2.0.2",
     "html2canvas": "^1.0.0-alpha.12",
-    "mdn-polyfills": "^5.17.0",
+    "mdn-polyfills": "^5.18.0",
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
     "parcel-bundler": "^1.12.3",
-    "parcel-plugin-static-files-copy": "^2.1.2",
-    "typescript": "^3.5.2"
+    "parcel-plugin-static-files-copy": "^2.2.0",
+    "typescript": "^3.5.3"
   }
 }
